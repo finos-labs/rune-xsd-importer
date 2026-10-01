@@ -1,6 +1,6 @@
 name: 🤝 Meeting Minutes
-description: To track {PROJECT_NAME} meeting agenda and attendance
-title: "DD MMM YYYY - {PROJECT_NAME} Meeting Minutes"
+description: To track Rune XSD Model Importer Framework meeting agenda and attendance
+title: "DD MMM YYYY - Rune XSD Model Importer Framework Meeting Minutes"
 labels: ["meeting"]
 body:
   - type: markdown

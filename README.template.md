@@ -1,6 +1,6 @@
-[![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://community.finos.org/docs/governance/lifecycle-stages/incubating)
+[![badge-labs](https://user-images.githubusercontent.com/327285/230928932-7c75f8ed-e57b-41db-9fb7-a292a13a1e58.svg)](https://community.finos.org/docs/governance/lifecycle-stages/labs)
 
-# {PROJECT_NAME}
+# Rune XSD Model Importer Framework
 
 Short blurb about what your project does.
 
@@ -42,11 +42,11 @@ List the roadmap steps; alternatively link the Confluence Wiki page where the pr
 3. ....
 
 ## Contributing
-For any questions, bugs or feature requests please open an [issue](https://github.com/finos/{PROJECT_SLUG}/issues)
+For any questions, bugs or feature requests please open an [issue](https://github.com/finos/rune-xsd-importer/issues)
 For anything else please send an email to {PROJECT_MAILING_LIST}.
 
 To submit a contribution:
-1. Fork it (<https://github.com/finos/{PROJECT_SLUG}/fork>)
+1. Fork it (<https://github.com/finos/rune-xsd-importer/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Read our [contribution guidelines](CONTRIBUTING.md) and [Community Code of Conduct](https://www.finos.org/code-of-conduct)
 4. Commit your changes (`git commit -am 'Add some fooBar'`)
@@ -59,7 +59,7 @@ _NOTE:_ Pull requests must follow this repository’s contribution policy. FINOS
 
 ## License
 
-Copyright {YYYY} {NAME_OF_COPYRIGHT_OWNER}
+Copyright 2026 FINOS
 
 Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 

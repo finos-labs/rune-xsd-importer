@@ -8,6 +8,7 @@ For information about maintainer responsibilities and resources, see the [FINOS 
 
 | GitHub Username | Name | Organization | Email (Optional) |
 |----------------|------|--------------|-------|
+| @manel-martos	| @manel-martos | TradeHeader SL ||
 
 ## Updating this file
 
