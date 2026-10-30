@@ -1,61 +1,114 @@
 [![badge-labs](https://user-images.githubusercontent.com/327285/230928932-7c75f8ed-e57b-41db-9fb7-a292a13a1e58.svg)](https://community.finos.org/docs/governance/lifecycle-stages/labs)
 
-# Rune XSD Model Importer Framework
+# Rune XSD Model Importer
 
-Short blurb about what your project does.
+The Rune XSD Model Importer converts W3C XML Schema Definitions (XSD) into Rune DSL models and XML serialization configuration files.
+
+The public framework provides deterministic mappings for covered XSD constructs including simple and complex types, restrictions, unions, groups, choices, extensions, substitution groups, and selected polymorphism scenarios.
+
+Public fixture coverage is representative rather than complete W3C XSD coverage. Known limitations and unsupported constructs are documented in the capability matrix.
 
 ## Installation
 
-OS X & Linux:
+The project currently builds from source.
+
+Prerequisites:
+
+- Java 21
+- Maven
+
+The build resolves Rune, Rosetta, and XML dependencies declared in `pom.xml`. On a clean machine, Maven must have access to the repositories configured for those public dependencies.
+
+Clone the repository and run:
 
 ```sh
-npm install my-crazy-module --save
+mvn test
 ```
 
-Windows:
+`mvn test` is reserved for isolated component tests. To run the complete public schema-generation and round-trip suite, use:
 
 ```sh
-edit autoexec.bat
+mvn verify
 ```
 
-## Usage example
+For a clean release or CI verification, remove previous Maven output first:
 
-A few motivating and useful examples of how your project can be used. Spice this up with code blocks and potentially screenshots / videos ([LiceCap](https://www.cockos.com/licecap/) is great for this kind of thing).
+```sh
+mvn clean verify
+```
 
-_For more examples and usage, please refer to the [Wiki][wiki]._
+To compile without running tests:
+
+```sh
+mvn -DskipTests compile
+```
+
+## Usage
+
+The importer is exposed through a programmatic Java API. A complete usage example is available in the [Getting Started guide](documentation/docs/getting-started.md).
+
+The basic workflow is:
+
+1. Bootstrap the Rune/EMF infrastructure.
+2. Parse the XSD through `XsdParserJaxpFactory.defaultFactory()` using the default XML security policy.
+3. Configure target namespaces and Rune package mappings.
+4. Generate Rune models.
+5. Write the generated Rune and XML configuration artifacts.
+
+Model files use `.rune` by default. Call the compatibility-preserving three-argument `RuneGenerator.generateModels(...)` overload with `XsdImporterConfig.builder().modelFileExtension(".rosetta").build()` to emit `.rosetta` files instead. Extensions are trimmed, lower-cased, and given a leading dot before validation; only `.rune` and `.rosetta` are supported.
+
+Application code should create parsers through `XsdParserJaxpFactory`. The factory always uses its fixed secure XML settings. It does not apply fixed schema-size or dependency-count limits, so large industry schemas remain subject to the hosting application's resource expectations.
 
 ## Development setup
 
-Describe how to install all development dependencies and how to run an automated test-suite of some kind. Potentially do this for multiple platforms.
+The public test suite covers both model generation and round-trip XML serialization.
+
+Useful commands:
 
 ```sh
-make install
-npm test
+mvn test
+mvn verify
+mvn clean verify
+mvn -DskipTests compile
 ```
+
+To run one public integration scenario during development, use Failsafe directly:
+
+```sh
+mvn -Dit.test=NestedChoiceIntegrationTest -DfailIfNoTests=false failsafe:integration-test failsafe:verify
+```
+
+`mvn test` does not claim feature compatibility; `mvn verify` is the public generation, validation, compilation, and round-trip compatibility gate.
+
+See the [public test coverage](documentation/docs/test-coverage.md) and [architecture overview](documentation/docs/architecture.md) for details about the implementation and verification pipeline.
+
+## Documentation
+
+- [Documentation hub](documentation/README.md)
+- [Getting Started guide](documentation/docs/getting-started.md)
+- [Architecture overview](documentation/docs/architecture.md)
+- [XSD-to-Rune mapping reference](documentation/docs/mapping-reference.md)
+- [Capability matrix](documentation/docs/capability-matrix.md)
+- [Advanced serialization](documentation/docs/advanced-serialization.md)
+- [Public test coverage](documentation/docs/test-coverage.md)
+- [Issue reporting guide](documentation/docs/issue-reporting.md)
 
 ## Roadmap
 
-List the roadmap steps; alternatively link the Confluence Wiki page where the project roadmap is published.
+Current priorities include:
 
-1. Item 1
-2. Item 2
-3. ....
+1. Rune DSL version bump
+1. Root-level `xsi:type` polymorphism support.
+2. Better handling of repeated choices and ambiguous unions.
+3. Support for open content such as `xs:any` and `xs:anyAttribute`.
+
+See the [capability matrix](documentation/docs/capability-matrix.md) for the current status and known limitations.
 
 ## Contributing
-For any questions, bugs or feature requests please open an [issue](https://github.com/finos/rune-xsd-importer/issues)
-For anything else please send an email to {PROJECT_MAILING_LIST}.
 
-To submit a contribution:
-1. Fork it (<https://github.com/finos/rune-xsd-importer/fork>)
-2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Read our [contribution guidelines](CONTRIBUTING.md) and [Community Code of Conduct](https://www.finos.org/code-of-conduct)
-4. Commit your changes (`git commit -am 'Add some fooBar'`)
-5. Push to the branch (`git push origin feature/fooBar`)
-6. Create a new Pull Request
+For contribution requirements, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-_NOTE:_ Pull requests must follow this repository’s contribution policy. FINOS projects typically use **DCO** (signed commits) and/or **CLA** via [EasyCLA](https://community.finos.org/docs/governance/Software-Projects/easycla), depending on configuration. Read [FINOS Contribution Requirements](https://community.finos.org/docs/governance/Software-Projects/contribution-compliance-requirements) and the [Technical Charter](technical-charter.pdf) example referenced from [CONTRIBUTING.md](CONTRIBUTING.md) before contributing.
-
-*Questions about CLA, DCO, or EasyCLA? Email [help@finos.org](mailto:help@finos.org)*
+Please report bugs and feature gaps through the project’s [issue tracker](https://github.com/finos-labs/rune-xsd-importer/issues), including a minimal XSD and XML reproducer where applicable.
 
 ## License
 

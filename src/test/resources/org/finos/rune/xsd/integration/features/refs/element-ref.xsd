@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/test/refs/element"
+        xmlns:dsig="http://example.com/rune/test/refs/element/dsig"
+        targetNamespace="http://example.com/rune/test/refs/element"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:import namespace="http://example.com/rune/test/refs/element/dsig"
+               schemaLocation="element-ref-dsig.xsd"/>
+
+    <xs:element name="globalRefEl" type="xs:string"/>
+    <xs:element name="testElementRef" type="tns:ElementRefType"/>
+
+    <xs:complexType name="ElementRefType">
+        <xs:sequence>
+            <xs:element name="beforeRef" type="xs:int"/>
+            <xs:element ref="tns:globalRefEl"/>
+            <xs:element ref="dsig:Signature" minOccurs="0"/>
+            <xs:element name="afterRef" type="xs:boolean" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

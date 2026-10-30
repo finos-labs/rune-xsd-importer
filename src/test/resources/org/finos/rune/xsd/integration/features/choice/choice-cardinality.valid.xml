@@ -1,0 +1,9 @@
+<choiceTest xmlns="http://example.com/rune/choice">
+    <id>ABC</id>
+    <repeatingSequenceMember>1</repeatingSequenceMember>
+    <repeatingSequenceMember>2</repeatingSequenceMember>
+    <asInt>42</asInt>
+    <optA>true</optA>
+    <optB>12.34</optB>
+    <requiredSingleChoice>required</requiredSingleChoice>
+</choiceTest>

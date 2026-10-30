@@ -1,0 +1,9 @@
+<testGroupNesting xmlns="http://example.com/rune/test/groups/nesting">
+    <beforeNested>12.34</beforeNested>
+    <nestedBool>true</nestedBool>
+    <baseString>abc</baseString>
+    <baseCode>BASE-7</baseCode>
+    <baseInt>7</baseInt>
+    <nestedDate>2026-01-21</nestedDate>
+    <afterNested>Something</afterNested>
+</testGroupNesting>

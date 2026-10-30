@@ -1,0 +1,4 @@
+<tns:root xmlns:tns="http://example.com/rune/test/refs/pattern">
+    <tns:patternRefEl>90210</tns:patternRefEl>
+    <tns:fullRefEl>101</tns:fullRefEl>
+</tns:root>

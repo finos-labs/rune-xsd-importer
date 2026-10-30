@@ -1,0 +1,7 @@
+<multi:UserRecord
+        xmlns:multi="http://example.com/multi"
+>
+    <multi:id>USER-00000</multi:id>
+    <multi:role>USER</multi:role>
+    <multi:status>ACTIVE</multi:status>
+</multi:UserRecord>

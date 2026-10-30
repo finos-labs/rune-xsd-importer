@@ -1,0 +1,8 @@
+<testComplexExt xmlns="http://example.com/rune/test/extension/complex"
+                baseRequiredAttr="1"
+                baseOptionalAttr="true"
+                derivedAttr="with-group">
+    <baseString>abc</baseString>
+    <derivedDecimal>99.01</derivedDecimal>
+    <extraNote>additional extension content</extraNote>
+</testComplexExt>

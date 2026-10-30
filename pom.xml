@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.finos.rune</groupId>
+    <artifactId>xsd-rune-importer</artifactId>
+    <version>0.0.0-main-SNAPSHOT</version>
+
+    <name>Rune XSD Model Importer</name>
+
+    <description>A deterministic, type-safe transpiler for converting XML Schema Definitions (XSD) into Rune DSL models (.rune) and Rosetta XML Configuration files (xml-config.json).</description>
+    <url>https://github.com/finos-labs/rune-xsd-importer.git</url>
+
+    <developers>
+        <developer>
+            <id>mmartos</id>
+            <name>Manuel martos</name>
+            <email>info@tradeheader.com</email>
+            <url>https://github.com/manel-martos</url>
+            <organization>TradeHeader</organization>
+            <organizationUrl>https://www.tradeheader.com</organizationUrl>
+            <timezone>Europe/Paris</timezone>
+            <roles>
+                <role>Developer</role>
+                <role>Maintainer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <properties>
+        <!-- core -->
+        <maven.compiler.release>21</maven.compiler.release>
+        <java.enforced.version>[21,22)</java.enforced.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- dependencies -->
+        <xsdParser.version>1.2.21</xsdParser.version>
+        <xmlunit.version>2.11.0</xmlunit.version>
+        <rune.version>9.75.2</rune.version>
+        <rune.bundle.version>11.108.0</rune.bundle.version>
+        <jupiter-api.version>5.14.2</jupiter-api.version>
+        <logback.version>1.6.5</logback.version>
+        <jackson.version>2.17.1</jackson.version>
+
+        <!-- plugins -->
+        <surefire-plugin.version>3.5.4</surefire-plugin.version>
+        <compiler-plugin.version>3.14.1</compiler-plugin.version>
+        <skipPublicIntegrationTests>false</skipPublicIntegrationTests>
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- xsd/xml -->
+            <dependency>
+                <groupId>com.github.xmlet</groupId>
+                <artifactId>xsdParser</artifactId>
+                <version>${xsdParser.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.xmlunit</groupId>
+                <artifactId>xmlunit-core</artifactId>
+                <version>${xmlunit.version}</version>
+            </dependency>
+
+            <!-- rune-dsl/rosetta-tools -->
+            <dependency>
+                <groupId>org.finos.rune</groupId>
+                <artifactId>org.finos.rune.parent</artifactId>
+                <version>${rune.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.finos.rune</groupId>
+                <artifactId>rune-lang</artifactId>
+                <version>${rune.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.finos.rune</groupId>
+                <artifactId>rune-runtime</artifactId>
+                <version>${rune.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.finos.rune</groupId>
+                <artifactId>rune-testing</artifactId>
+                <version>${rune.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.regnosys</groupId>
+                <artifactId>rosetta-common</artifactId>
+                <version>${rune.bundle.version}</version>
+            </dependency>
+
+            <!-- jackson-dataformat -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-xml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- xsd/xml -->
+        <dependency>
+            <groupId>com.github.xmlet</groupId>
+            <artifactId>xsdParser</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.xmlunit</groupId>
+            <artifactId>xmlunit-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- rune-dsl/rosetta-tools -->
+        <dependency>
+            <groupId>org.finos.rune</groupId>
+            <artifactId>rune-lang</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.finos.rune</groupId>
+            <artifactId>rune-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.regnosys</groupId>
+            <artifactId>rosetta-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.finos.rune</groupId>
+            <artifactId>rune-testing</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- databind (managed by the rune BOM)-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler-plugin.version}</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
+            </plugin>
+            <!-- Default configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire-plugin.version}</version>
+
+                <configuration>
+                    <excludes>
+                        <exclude>**/*IntegrationTest.java</exclude>
+                        <exclude>**/*RegressionTest.java</exclude>
+                    </excludes>
+                </configuration>
+
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${surefire-plugin.version}</version>
+
+                <configuration>
+                    <includes>
+                        <include>**/*IntegrationTest.java</include>
+                    </includes>
+                    <reuseForks>false</reuseForks>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>run-public-integration-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <skipITs>${skipPublicIntegrationTests}</skipITs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>run-regression-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/*RegressionTest.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

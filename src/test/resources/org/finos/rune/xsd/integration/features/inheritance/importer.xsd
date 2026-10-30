@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/importer"
+           xmlns:tns="http://example.com/importer"
+           xmlns:base="http://example.com/base"
+           elementFormDefault="qualified">
+
+    <xs:import namespace="http://example.com/base" schemaLocation="base.xsd"/>
+
+    <xs:element name="Employee" type="tns:EmployeeType"/>
+
+    <xs:complexType name="EmployeeType">
+        <xs:complexContent>
+            <xs:extension base="base:Person">
+                <xs:sequence>
+                    <xs:element name="department" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

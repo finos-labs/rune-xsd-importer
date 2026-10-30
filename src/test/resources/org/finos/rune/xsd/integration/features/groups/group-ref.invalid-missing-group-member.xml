@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testGroup xmlns="http://example.com/rune/test/groups">
+    <beforeGroup>true</beforeGroup>
+    <groupInt>42</groupInt>
+    <afterGroup>2026-01-21</afterGroup>
+</testGroup>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:root xmlns:base="http://example.com/rune/root-polymorphism">
+    <base:id>ROOT-MISSING-TYPE</base:id>
+</base:root>

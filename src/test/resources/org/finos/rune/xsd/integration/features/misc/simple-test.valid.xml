@@ -1,0 +1,5 @@
+<TestObject xmlns="http://example.com/simple">
+    <name>Basic Test</name>
+    <count>42</count>
+    <side>Buy</side>
+</TestObject>

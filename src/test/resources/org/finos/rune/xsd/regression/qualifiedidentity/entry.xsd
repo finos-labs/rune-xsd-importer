@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:customer="urn:example:qualified:customer"
+           xmlns:portfolio="urn:example:qualified:portfolio"
+           targetNamespace="urn:example:qualified:entry">
+    <xs:import namespace="urn:example:qualified:customer" schemaLocation="customer.xsd"/>
+    <xs:import namespace="urn:example:qualified:portfolio" schemaLocation="portfolio.xsd"/>
+</xs:schema>

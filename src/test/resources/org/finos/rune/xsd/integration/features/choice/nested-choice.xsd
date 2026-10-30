@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/nestedchoice"
+           xmlns:tns="http://example.com/nestedchoice"
+           elementFormDefault="qualified">
+
+    <xs:group name="PricingModel">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Simplified pricing options.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="schedule" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Variable price over time.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <xs:choice>
+                    <xs:element name="fixed" type="xs:string"/>
+                    <xs:element name="worldscale" type="xs:decimal"/>
+                    <xs:element name="contract" type="xs:decimal"/>
+                    <xs:element name="settlement" type="xs:string" maxOccurs="unbounded"/>
+                </xs:choice>
+            </xs:choice>
+
+            <xs:element name="total" type="xs:decimal" minOccurs="0"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:element name="Trade">
+        <xs:complexType>
+            <xs:group ref="tns:PricingModel"/>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

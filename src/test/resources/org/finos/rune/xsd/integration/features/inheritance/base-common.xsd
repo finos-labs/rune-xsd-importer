@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/common"
+           elementFormDefault="qualified">
+
+    <xs:simpleType name="StatusEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ACTIVE"/>
+            <xs:enumeration value="INACTIVE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:group name="AuditGroup">
+        <xs:sequence>
+            <xs:element name="createdAt" type="xs:date"/>
+            <xs:element name="createdBy" type="xs:string"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:attribute name="auditCode" type="xs:string"/>
+
+    <xs:complexType name="OrphanBaseType">
+        <xs:sequence>
+            <xs:element name="reason" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

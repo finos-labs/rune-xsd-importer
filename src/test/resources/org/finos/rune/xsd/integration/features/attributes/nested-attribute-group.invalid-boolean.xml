@@ -1,0 +1,7 @@
+<attrGroupNestTest xmlns="http://example.com/rune/attrgroupnest"
+                   a1="ID"
+                   a2="5"
+                   a3="not-bool"
+                   localX="X">
+    <name>abc</name>
+</attrGroupNestTest>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:exoticTest xmlns:tns="http://example.com/rune/exotic-subst">
+    <tns:vehicle>
+        <tns:make>Generic Motors</tns:make>
+    </tns:vehicle>
+    <tns:car>
+        <tns:make>Toyota</tns:make>
+        <tns:doors>4</tns:doors>
+    </tns:car>
+    <tns:equity>
+        <tns:id>EQ1</tns:id>
+        <tns:ticker>APPL</tns:ticker>
+    </tns:equity>
+    <tns:passport>P123456</tns:passport>
+    <tns:license>LIC-987</tns:license>
+</tns:exoticTest>

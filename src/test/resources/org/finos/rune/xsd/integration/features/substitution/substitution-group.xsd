@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/subst"
+        targetNamespace="http://example.com/rune/subst"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:complexType name="AnimalType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DogType">
+        <xs:complexContent>
+            <xs:extension base="tns:AnimalType">
+                <xs:sequence>
+                    <xs:element name="barks" type="xs:boolean" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="CatType">
+        <xs:complexContent>
+            <xs:extension base="tns:AnimalType">
+                <xs:sequence>
+                    <xs:element name="meows" type="xs:boolean" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ZooType">
+        <xs:sequence>
+            <xs:element ref="tns:animal" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="animal" type="tns:AnimalType" abstract="true"/>
+    <xs:element name="dog" type="tns:DogType" substitutionGroup="tns:animal"/>
+    <xs:element name="cat" type="tns:CatType" substitutionGroup="tns:animal"/>
+
+    <xs:element name="zoo" type="tns:ZooType"/>
+</xs:schema>

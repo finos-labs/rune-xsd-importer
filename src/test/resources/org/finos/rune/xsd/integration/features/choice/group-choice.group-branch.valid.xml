@@ -1,0 +1,7 @@
+<tns:testGroupChoice
+        xmlns:tns="http://example.com/rune/test/groups/choice">
+    <tns:beforeChoice>false</tns:beforeChoice>
+    <tns:choiceCode>CHOICE-GROUP</tns:choiceCode>
+    <tns:choiceInt>42</tns:choiceInt>
+    <tns:afterChoice>99.99</tns:afterChoice>
+</tns:testGroupChoice>

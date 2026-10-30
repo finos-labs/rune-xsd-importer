@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t:trade xmlns:t="urn:example:trade:form-defaults"
+       version="2"
+       t:qualifiedSource="systemB"
+       unqualifiedSource="legacy-b">
+    <defaultElement>54321</defaultElement>
+    <t:qualifiedElement>SETTLED</t:qualifiedElement>
+    <unqualifiedElement>DONE</unqualifiedElement>
+    <t:globalElement>reference-b</t:globalElement>
+</t:trade>

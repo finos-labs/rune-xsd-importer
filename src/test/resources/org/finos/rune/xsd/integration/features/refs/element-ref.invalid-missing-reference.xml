@@ -1,0 +1,4 @@
+<testElementRef xmlns="http://example.com/rune/test/refs/element">
+    <beforeRef>1</beforeRef>
+    <afterRef>true</afterRef>
+</testElementRef>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recursiveDocument xmlns="http://example.com/rune/dependencies/recursive">
+    <portfolio>
+        <name>root</name>
+        <child>
+            <name>nested</name>
+        </child>
+    </portfolio>
+    <formula>
+        <expression>root-expression</expression>
+        <component>
+            <label>component</label>
+            <nestedFormula>
+                <expression>nested-expression</expression>
+            </nestedFormula>
+        </component>
+    </formula>
+</recursiveDocument>

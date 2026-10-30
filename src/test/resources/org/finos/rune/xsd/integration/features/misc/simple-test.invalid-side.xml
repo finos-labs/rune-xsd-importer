@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestObject xmlns="http://example.com/simple">
+    <name>Invalid enum value</name>
+    <count>42</count>
+    <side>Hold</side>
+</TestObject>

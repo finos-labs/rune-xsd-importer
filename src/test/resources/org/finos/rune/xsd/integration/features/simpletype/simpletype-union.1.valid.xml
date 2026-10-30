@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unionTest xmlns="http://example.com/rune/union">
+    <value>A</value>
+
+    <effectiveDate>2026-02-26</effectiveDate>
+    <effectiveDate>2026-02-27</effectiveDate>
+    <effectiveDate>2026-03-01</effectiveDate>
+
+    <isCleared>true</isCleared>
+
+</unionTest>

@@ -1,0 +1,8 @@
+<testElementRef xmlns="http://example.com/rune/test/refs/element">
+    <beforeRef>1</beforeRef>
+    <globalRefEl>abc</globalRefEl>
+    <ds:Signature xmlns:ds="http://example.com/rune/test/refs/element/dsig">
+        <ds:signatureValue>ZW1peWE=</ds:signatureValue>
+    </ds:Signature>
+    <afterRef>true</afterRef>
+</testElementRef>

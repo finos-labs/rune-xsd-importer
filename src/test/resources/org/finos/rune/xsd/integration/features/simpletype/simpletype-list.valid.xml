@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listTest xmlns="http://example.com/rune/list">
+    <ints>0 1 2 10</ints>
+    <tokens>AAA BBB CCC</tokens>
+</listTest>

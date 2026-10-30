@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="urn:example:prefix:first"
+           targetNamespace="urn:example:prefix:entry">
+    <xs:import namespace="urn:example:prefix:first" schemaLocation="first.xsd"/>
+    <xs:import namespace="urn:example:prefix:second" schemaLocation="second.xsd"/>
+</xs:schema>

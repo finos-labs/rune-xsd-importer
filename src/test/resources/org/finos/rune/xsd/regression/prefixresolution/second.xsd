@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="urn:example:prefix:second"
+           targetNamespace="urn:example:prefix:second"
+           elementFormDefault="qualified">
+    <xs:complexType name="Base">
+        <xs:sequence>
+            <xs:element name="secondValue" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Derived">
+        <xs:complexContent>
+            <xs:extension base="tns:Base"/>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

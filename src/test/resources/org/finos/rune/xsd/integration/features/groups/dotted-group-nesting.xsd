@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/test/groups/dotted"
+        targetNamespace="http://example.com/rune/test/groups/dotted"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:group name="Inner.model">
+        <xs:sequence>
+            <xs:element name="innerCode" type="xs:string"/>
+            <xs:element name="innerCount" type="xs:int" minOccurs="0"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:group name="Outer.model">
+        <xs:sequence>
+            <xs:element name="outerFlag" type="xs:boolean"/>
+            <xs:group ref="tns:Inner.model"/>
+            <xs:element name="outerDate" type="xs:date"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:element name="dottedGroupNesting" type="tns:DottedGroupNestingType"/>
+
+    <xs:complexType name="DottedGroupNestingType">
+        <xs:sequence>
+            <xs:element name="beforeGroup" type="xs:decimal"/>
+            <xs:group ref="tns:Outer.model"/>
+            <xs:element name="afterGroup" type="xs:QName"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

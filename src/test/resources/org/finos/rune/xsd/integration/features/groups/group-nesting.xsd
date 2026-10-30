@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/test/groups/nesting"
+        targetNamespace="http://example.com/rune/test/groups/nesting"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:group name="BaseFields">
+        <xs:sequence>
+            <xs:element name="baseString" type="xs:string"/>
+            <xs:element ref="tns:baseCode"/>
+            <xs:element name="baseInt" type="xs:int" minOccurs="0"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:group name="NestedFields">
+        <xs:sequence>
+            <xs:element name="nestedBool" type="xs:boolean"/>
+            <xs:group ref="tns:BaseFields"/>
+            <xs:element name="nestedDate" type="xs:date"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:element name="baseCode">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="BASE-[0-9]+"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="testGroupNesting" type="tns:GroupNestingType"/>
+
+    <xs:complexType name="GroupNestingType">
+        <xs:sequence>
+            <xs:element name="beforeNested" type="xs:decimal"/>
+            <xs:group ref="tns:NestedFields"/>
+            <xs:element name="afterNested" type="xs:QName"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

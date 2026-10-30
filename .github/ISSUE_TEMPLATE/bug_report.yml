@@ -1,55 +1,151 @@
-name: 🐛 Bug Report
-description: If something isn't working as expected 🤔
+name: 🐛 Rune XSD Importer Bug Report
+description: Report a reproducible defect in supported or verified XSD-to-Rune generation, XML configuration, or runtime XML serialization.
 title: "[Bug] "
-labels: ["bug"]
+labels: ["bug", "triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report a bug! Please fill out the form below.
+        Thanks for taking the time to report a bug.
+
+        The importer provides representative, XSD 1.0-oriented support. It is not a complete W3C XSD implementation. Please provide the smallest complete reproducer that demonstrates the observed behavior and avoid including confidential schemas, credentials, or other sensitive data.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and documentation and this is an implementation defect rather than a general usage question.
+          required: true
+        - label: The reproducer is public or sanitized and contains no credentials, secrets, or confidential schema content.
+          required: true
+        - label: I checked the capability matrix and understand that a pending or unsupported construct may need a feature request instead of a bug report.
+          required: true
+    validations:
+      required: true
+
+  - type: dropdown
+    id: usage-context
+    attributes:
+      label: Usage Context
+      description: Where did the failure occur?
+      options:
+        - Public Java API in an application
+        - Repository component tests (mvn test)
+        - Repository integration tests (mvn verify)
+        - Other Java integration
+    validations:
+      required: true
+
+  - type: dropdown
+    id: affected-area
+    attributes:
+      label: Affected Area
+      description: Select every area involved in the failure.
+      multiple: true
+      options:
+        - Parser or schema inspection
+        - Dependency or declaration resolution
+        - Rune model generation
+        - Rune model output (.rune or .rosetta)
+        - XML configuration (xml-config.json)
+        - XML deserialization
+        - XML serialization or round trip
+        - Build, test, or environment setup
+        - XML security policy or external resource access
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproducer
+    attributes:
+      label: Minimal Complete Reproducer
+      description: For an XSD issue, include the entry-point XSD and every import/include required to reproduce it. For an API, build, or configuration issue, include the smallest Java example and relevant files.
+      placeholder: |
+        Entry point: schema.xsd
+        Files or code:
+        - schema.xsd
+        - imported.xsd
+        - sample.xml
+        - Reproducer.java
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: schema-context
+    attributes:
+      label: Schema and Namespace Context
+      description: For schema-related issues, list the entry path, target namespace(s), imported namespace URI(s), relevant xmlns bindings, and namespace-to-Rune-package mappings. Include the XSD type/base/ref/substitutionGroup values involved. Write Not applicable when no schema is involved.
+      placeholder: |
+        Entry XSD:
+        Target namespace(s):
+        Imported or included namespace URI(s):
+        Namespace-to-package mappings:
+        Relevant qualified references:
+        Model-file extension (.rune or .rosetta):
+    validations:
+      required: true
+
   - type: textarea
     id: steps
     attributes:
-      label: Steps to Reproduce
-      description: Please provide clear steps to reproduce the issue
+      label: Steps and Configuration
+      description: Provide the exact Maven command or Java API calls, including the parser factory, any custom XsdSecurityPolicy, RuneGeneratorConfig, XsdImporterConfig, output paths, and the order of operations.
       placeholder: |
-        1. Step 1 description
-        2. Step 2 description
-        3. Step 3 description
+        Command or API call:
+        Parser factory and policy:
+        Generator configuration:
+        Importer configuration:
+        Steps:
+        1. Run ...
+        2. Observe ...
     validations:
       required: true
+
+  - type: textarea
+    id: xml-payload
+    attributes:
+      label: XML Input and Validation Status
+      description: For XML runtime issues, provide the smallest XML instance and state whether it validates against the source XSD. If serialization is involved, include the actual generated XML separately in the observed-result field.
+      render: xml
+    validations:
+      required: false
+
   - type: textarea
     id: expected
     attributes:
       label: Expected Result
-      description: What did you expect to happen?
-      placeholder: Description of what you expected to see...
+      description: Describe the expected behavior for the supported or verified schema shape. State whether the expectation concerns generated Rune, xml-config.json, source-schema validation, deserialization, serialization, or rejection with a diagnostic.
     validations:
       required: true
+
   - type: textarea
     id: actual
     attributes:
-      label: Actual Result
-      description: What actually happened? Include full exceptions (entire stack trace, including "caused by" entries), log entries, screenshots, etc.
-      placeholder: What actually happened...
+      label: Observed Result and Artifacts
+      description: Include the complete exception cause chain, generated Rune or Rosetta output, xml-config.json excerpt, serialized XML, validation error, or structural difference that demonstrates the failure. Do not rely on screenshots alone.
+      render: text
     validations:
       required: true
+
   - type: textarea
     id: environment
     attributes:
       label: Environment
-      description: Version and build of the project, OS and runtime versions, virtualised environment (if any), etc.
+      description: Include the project revision and runtime versions. The repository currently requires Java 21.
       placeholder: |
-        - Project version:
-        - OS:
-        - Runtime version:
-        - Other relevant details:
+        Project revision:
+        OS:
+        Java version:
+        Maven version:
+        Rune/Rosetta dependency version, if different from pom.xml:
+        Other relevant details:
     validations:
       required: true
+
   - type: textarea
     id: context
     attributes:
       label: Additional Context
-      description: Add any other context about the problem here. If applicable, add screenshots to help explain.
-      placeholder: Any additional information that might be helpful...
-
+      description: Add links to a focused public fixture, related issue, capability-matrix entry, logs, or other context that may help maintainers.

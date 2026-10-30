@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/choice"
+        targetNamespace="http://example.com/rune/choice"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:complexType name="ChoiceCardinalityType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string"/>
+            <xs:sequence minOccurs="0" maxOccurs="1">
+                <xs:element name="optionalSequenceMember" type="xs:string"/>
+            </xs:sequence>
+            <xs:sequence minOccurs="1" maxOccurs="2">
+                <xs:element name="repeatingSequenceMember" type="xs:int"/>
+            </xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="1">
+                <xs:element name="asString" type="xs:string"/>
+                <xs:element name="asInt" type="xs:int"/>
+            </xs:choice>
+            <xs:choice minOccurs="1" maxOccurs="3">
+                <xs:element name="optA" type="xs:boolean"/>
+                <xs:element name="optB" type="xs:decimal"/>
+            </xs:choice>
+            <xs:choice minOccurs="1" maxOccurs="1">
+                <xs:element name="requiredSingleChoice" type="xs:string"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="choiceTest" type="tns:ChoiceCardinalityType"/>
+
+</xs:schema>

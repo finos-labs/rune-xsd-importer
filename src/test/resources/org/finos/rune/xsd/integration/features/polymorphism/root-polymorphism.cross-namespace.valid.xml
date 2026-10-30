@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:root xmlns:base="http://example.com/rune/root-polymorphism"
+           xmlns:ext="http://example.com/rune/root-polymorphism/ext"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:type="ext:ExtendedRoot">
+    <base:id>ROOT-EXT</base:id>
+    <ext:externalValue>99</ext:externalValue>
+</base:root>

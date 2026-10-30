@@ -1,0 +1,13 @@
+<multi:UserRecord
+        xmlns:multi="http://example.com/multi"
+        xmlns:common="http://example.com/common"
+        common:auditCode="AUD-67890"
+>
+
+    <multi:id>USER-67890</multi:id>
+    <multi:role>USER</multi:role>
+    <multi:status>INACTIVE</multi:status>
+    <common:createdAt>2024-01-10</common:createdAt>
+    <common:createdBy>SystemAdmin</common:createdBy>
+
+</multi:UserRecord>

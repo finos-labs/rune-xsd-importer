@@ -1,0 +1,5 @@
+<tns:Trade
+        xmlns:tns="http://example.com/nestedchoice"
+>
+    <tns:worldscale>85.5</tns:worldscale>
+</tns:Trade>

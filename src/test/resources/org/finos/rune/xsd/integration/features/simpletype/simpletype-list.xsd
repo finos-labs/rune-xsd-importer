@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/list"
+        targetNamespace="http://example.com/rune/list"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:simpleType name="SmallInt">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="10"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="SmallIntList">
+        <xs:list itemType="tns:SmallInt"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="TokenList">
+        <xs:list itemType="xs:token"/>
+    </xs:simpleType>
+
+    <xs:complexType name="ListType">
+        <xs:sequence>
+            <xs:element name="ints" type="tns:SmallIntList"/>
+            <xs:element name="tokens" type="tns:TokenList" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="listTest" type="tns:ListType"/>
+
+</xs:schema>

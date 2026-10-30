@@ -1,0 +1,9 @@
+<tns:DataCollection xmlns:tns="http://example.com/advanced">
+    <tns:productSku>ABC-123</tns:productSku>
+    <tns:userAge>25</tns:userAge>
+    <tns:zip>10001</tns:zip>
+    <tns:favColor>Green</tns:favColor>
+    <tns:allScores>85 90 95</tns:allScores>
+    <tns:finalScore>N/A</tns:finalScore>
+    <tns:coordinates>10 20</tns:coordinates>
+</tns:DataCollection>

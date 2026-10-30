@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:t="urn:example:cross:types"
+           targetNamespace="urn:example:cross:messages"
+           elementFormDefault="qualified">
+    <xs:import namespace="urn:example:cross:types" schemaLocation="types.xsd"/>
+    <xs:element name="trade" type="t:Trade"/>
+</xs:schema>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/rune/root-polymorphism/ext"
+           xmlns:ext="http://example.com/rune/root-polymorphism/ext"
+           xmlns:base="http://example.com/rune/root-polymorphism"
+           elementFormDefault="qualified">
+
+    <xs:import namespace="http://example.com/rune/root-polymorphism"
+               schemaLocation="root-polymorphism-base.xsd"/>
+
+    <xs:complexType name="ExtendedRoot">
+        <xs:complexContent>
+            <xs:extension base="base:Root">
+                <xs:sequence>
+                    <xs:element name="externalValue" type="xs:int"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="externalRoot" type="ext:ExtendedRoot"/>
+
+</xs:schema>

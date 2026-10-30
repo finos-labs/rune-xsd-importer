@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dottedGroupNesting xmlns="http://example.com/rune/test/groups/dotted">
+    <beforeGroup>12.34</beforeGroup>
+    <outerFlag>true</outerFlag>
+    <innerCode>ABC</innerCode>
+    <innerCount>7</innerCount>
+    <outerDate>2026-01-21</outerDate>
+    <afterGroup>Something</afterGroup>
+</dottedGroupNesting>

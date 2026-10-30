@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/test/groups/choice"
+        targetNamespace="http://example.com/rune/test/groups/choice"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:group name="ChoiceGroupFields">
+        <xs:sequence>
+            <xs:element ref="tns:choiceCode"/>
+            <xs:element name="choiceInt" type="xs:int" minOccurs="0"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:element name="choiceCode">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="CHOICE-[A-Z]+"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="testGroupChoice" type="tns:GroupChoiceType"/>
+
+    <xs:complexType name="GroupChoiceType">
+        <xs:sequence>
+            <xs:element name="beforeChoice" type="xs:boolean"/>
+            <xs:choice>
+                <xs:element name="choiceAltDate" type="xs:date"/>
+                <xs:group ref="tns:ChoiceGroupFields"/>
+            </xs:choice>
+            <xs:element name="afterChoice" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

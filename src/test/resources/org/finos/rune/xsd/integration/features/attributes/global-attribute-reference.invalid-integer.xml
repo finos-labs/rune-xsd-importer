@@ -1,0 +1,7 @@
+<globalAttributeReference xmlns="http://example.com/rune/attrref"
+                          xmlns:attr="http://example.com/rune/attrref"
+                          attr:globalId="ID-1"
+                          attr:globalCode="not-an-integer"
+                          localFlag="true">
+    <name>abc</name>
+</globalAttributeReference>

@@ -2,11 +2,11 @@
 
 FINOS projects support responsible disclosure of security vulnerabilities and adheres to the [FINOS Security Vulnerabilities Responsible Disclosure Policy](https://community.finos.org/docs/governance/Software-Projects/cve-responsible-disclosure). 
 
-If you find something you believe to be a security issue, we encourage and appreciate your report. Please report the issue privately to the [project maintainers](rune-xsd-importer/blob/main/MAINTAINERS.md) using one of the following methods:
+If you find something you believe to be a security issue, we encourage and appreciate your report. Please report the issue privately to the [project maintainers](https://github.com/finos-labs/rune-xsd-importer/blob/main/MAINTAINERS.md) using one of the following methods:
 
 ## Reporting a Vulnerability
 
-- **GitHub Security Reports:** In order for the vulnerability reports to reach maintainers as soon as possible, the preferred way is to use the ["Report a vulnerability"]({PROJECT_URL}/security) button under our "Security and quality" tab. This creates a private communication channel between you and the maintainers.
+- **GitHub Security Reports:** In order for the vulnerability reports to reach maintainers as soon as possible, the preferred way is to use the ["Report a vulnerability"](https://github.com/finos-labs/rune-xsd-importer/security) button under our "Security and quality" tab. This creates a private communication channel between you and the maintainers.
 - **Email:** If you are unable to or have strong reasons not to use the GitHub Security vulnerability reporting feature, please email the maintainers directly and CC: [security@finos.org](mailto:security@finos.org) with a description of the vulnerability, along with relevant details (Impact, Patches, Workarounds, References and Screenshots).
 
 ## Vulnerability Process

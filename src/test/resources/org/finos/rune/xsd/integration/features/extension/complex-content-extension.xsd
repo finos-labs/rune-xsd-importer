@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/test/extension/complex"
+        targetNamespace="http://example.com/rune/test/extension/complex"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:element name="testComplexExt" type="tns:DerivedType"/>
+
+    <xs:complexType name="BaseType">
+        <xs:sequence>
+            <xs:element name="baseString" type="xs:string"/>
+        </xs:sequence>
+
+        <xs:attribute name="baseRequiredAttr" type="xs:int" use="required"/>
+        <xs:attribute name="baseOptionalAttr" type="xs:boolean"/>
+    </xs:complexType>
+
+    <xs:group name="ExtraFields">
+        <xs:sequence>
+            <xs:element name="extraNote" type="xs:string"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:complexType name="DerivedType">
+        <xs:complexContent>
+            <xs:extension base="tns:BaseType">
+                <xs:sequence>
+                    <xs:element name="derivedDecimal" type="xs:decimal"/>
+                    <xs:element name="derivedOptionalDate" type="xs:date" minOccurs="0"/>
+                    <xs:group ref="tns:ExtraFields" minOccurs="0"/>
+                </xs:sequence>
+
+                <xs:attribute name="derivedAttr" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

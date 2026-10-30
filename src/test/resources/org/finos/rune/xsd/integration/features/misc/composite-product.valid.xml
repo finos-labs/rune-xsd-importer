@@ -1,0 +1,33 @@
+<tns:Catalogue
+        xmlns:tns="http://example.com/rune/complex"
+>
+
+    <tns:product id="PROD-001">
+        <tns:SkuCode>SKU-55443</tns:SkuCode>
+        <tns:Description>Heavy Industrial Drill</tns:Description>
+        <tns:width>10.5</tns:width>
+        <tns:height>20.0</tns:height>
+        <tns:depth>15.2</tns:depth>
+        <tns:emptyValue/>
+        <tns:shippingWeight>45.5</tns:shippingWeight>
+    </tns:product>
+
+    <tns:product id="PROD-SOFT">
+        <tns:SkuCode>SKU-11223</tns:SkuCode>
+        <tns:width>0</tns:width>
+        <tns:height>0</tns:height>
+        <tns:depth>0</tns:depth>
+        <tns:emptyValue/>
+        <tns:digitalDownloadUrl>https://downloads.example.com/drill-manual.pdf</tns:digitalDownloadUrl>
+    </tns:product>
+
+    <tns:legacyProduct id="OLD-123">
+        <tns:SkuCode>SKU-00001</tns:SkuCode>
+        <tns:width>5</tns:width>
+        <tns:height>5</tns:height>
+        <tns:depth>5</tns:depth>
+        <tns:emptyValue/>
+        <tns:shippingWeight>1.0</tns:shippingWeight>
+    </tns:legacyProduct>
+
+</tns:Catalogue>

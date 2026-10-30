@@ -1,0 +1,7 @@
+<tns:testGroupChoice
+        xmlns:tns="http://example.com/rune/test/groups/choice">
+    <tns:beforeChoice>true</tns:beforeChoice>
+    <tns:choiceAltDate>2026-02-10</tns:choiceAltDate>
+    <tns:choiceString>Conflicting Branch</tns:choiceString>
+    <tns:afterChoice>150.50</tns:afterChoice>
+</tns:testGroupChoice>

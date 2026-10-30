@@ -1,0 +1,8 @@
+<imp:Employee
+        xmlns:imp="http://example.com/importer"
+        xmlns:base="http://example.com/base"
+>
+    <base:name>Bob Jones</base:name>
+    <base:id>EMP-99</base:id>
+    <imp:department>Engineering</imp:department>
+</imp:Employee>

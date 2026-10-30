@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="urn:example:unresolved-references"
+           targetNamespace="urn:example:unresolved-references"
+           elementFormDefault="qualified">
+    <xs:complexType name="MissingGroupReference">
+        <xs:sequence>
+            <xs:group ref="tns:MissingGroup"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MissingElementReference">
+        <xs:sequence>
+            <xs:element ref="tns:MissingElement"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MissingAttributeReference">
+        <xs:attribute ref="tns:missingAttribute"/>
+    </xs:complexType>
+    <xs:complexType name="MissingAttributeGroupReference">
+        <xs:attributeGroup ref="tns:MissingAttributeGroup"/>
+    </xs:complexType>
+    <xs:complexType name="UnknownPrefixAttributeGroupReference">
+        <xs:attributeGroup ref="bad:MissingAttributeGroup"/>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,8 @@
+<testAttrGroup xmlns="http://example.com/rune/test/attrs/group"
+               agRequired="x"
+               agOptional="10"
+               agDefault="ignored-at-instance"
+               agFixed="AG_FIXED"
+               localAttr="true">
+    <value>abc</value>
+</testAttrGroup>

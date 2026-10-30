@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:ds="http://example.com/rune/test/refs/element/dsig"
+        targetNamespace="http://example.com/rune/test/refs/element/dsig"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:element name="Signature" type="ds:SignatureType"/>
+
+    <xs:complexType name="SignatureType">
+        <xs:sequence>
+            <xs:element name="signatureValue" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

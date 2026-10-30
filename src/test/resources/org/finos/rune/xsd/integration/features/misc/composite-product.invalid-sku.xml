@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:Catalogue
+        xmlns:tns="http://example.com/rune/complex"
+>
+
+    <tns:product id="PROD-INVALID-SKU">
+        <tns:SkuCode>NOT-A-SKU</tns:SkuCode>
+        <tns:Description>Invalid product used to verify schema rejection</tns:Description>
+        <tns:width>10.5</tns:width>
+        <tns:height>20.0</tns:height>
+        <tns:depth>15.2</tns:depth>
+        <tns:shippingWeight>45.5</tns:shippingWeight>
+    </tns:product>
+
+</tns:Catalogue>

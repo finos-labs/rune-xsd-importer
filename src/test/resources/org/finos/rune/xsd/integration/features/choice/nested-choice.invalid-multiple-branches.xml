@@ -1,0 +1,7 @@
+<tns:Trade
+        xmlns:tns="http://example.com/nestedchoice"
+>
+    <tns:schedule>Monthly Variable Rate</tns:schedule>
+    <tns:worldscale>85.5</tns:worldscale>
+    <tns:total>5000.00</tns:total>
+</tns:Trade>

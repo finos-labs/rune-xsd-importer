@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/union"
+        targetNamespace="http://example.com/rune/union"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:simpleType name="CodeEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="A"/>
+            <xs:enumeration value="B"/>
+            <xs:enumeration value="C"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SmallInt">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="10"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="CodeOrSmallInt">
+        <xs:union memberTypes="tns:CodeEnum tns:SmallInt"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="StatusCodeEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PENDING"/>
+            <xs:enumeration value="SETTLED"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LegacyCodeEnum">
+        <xs:restriction base="xs:int">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TradeStatusEnum">
+        <xs:union memberTypes="tns:StatusCodeEnum tns:LegacyCodeEnum"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="TermEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ASAP"/>
+            <xs:enumeration value="TBD"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DateOrTerm">
+        <xs:union memberTypes="xs:date tns:TermEnum"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="DateOrString">
+        <xs:union memberTypes="xs:date xs:string"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="NaEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NA"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BooleanOrNa">
+        <xs:union memberTypes="xs:boolean tns:NaEnum"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="PositiveInt">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="MaxToken">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="MAX"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LimitOrMax">
+        <xs:union memberTypes="tns:PositiveInt tns:MaxToken"/>
+    </xs:simpleType>
+
+    <xs:complexType name="UnionType">
+        <xs:sequence>
+            <xs:element name="value" type="tns:CodeOrSmallInt"/>
+            <xs:element name="tradeStatus" type="tns:TradeStatusEnum" minOccurs="0"/>
+            <xs:element name="effectiveDate" type="tns:DateOrTerm" maxOccurs="unbounded"/>
+            <xs:element name="isCleared" type="tns:BooleanOrNa" minOccurs="0"/>
+            <xs:element name="tradeLimit" type="tns:LimitOrMax" minOccurs="0" maxOccurs="3"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="unionTest" type="tns:UnionType"/>
+
+</xs:schema>

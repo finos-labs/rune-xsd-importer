@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:zoo xmlns:tns="http://example.com/rune/subst">
+    <tns:animal>
+        <tns:name>Unresolved head</tns:name>
+    </tns:animal>
+</tns:zoo>

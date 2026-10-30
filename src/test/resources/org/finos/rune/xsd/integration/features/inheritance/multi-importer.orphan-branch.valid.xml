@@ -1,0 +1,3 @@
+<multi:orphanElement xmlns:multi="http://example.com/multi">
+    Standalone string content
+</multi:orphanElement>

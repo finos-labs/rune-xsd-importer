@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/exotic-subst"
+        targetNamespace="http://example.com/rune/exotic-subst"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:complexType name="VehicleType">
+        <xs:sequence>
+            <xs:element name="make" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CarType">
+        <xs:complexContent>
+            <xs:extension base="tns:VehicleType">
+                <xs:sequence>
+                    <xs:element name="doors" type="xs:int"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="vehicle" type="tns:VehicleType"/>
+    <xs:element name="car" type="tns:CarType" substitutionGroup="tns:vehicle"/>
+
+    <xs:complexType name="InstrumentType">
+        <xs:sequence><xs:element name="id" type="xs:string"/></xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EquityType">
+        <xs:complexContent>
+            <xs:extension base="tns:InstrumentType">
+                <xs:sequence><xs:element name="ticker" type="xs:string"/></xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="StockType">
+        <xs:complexContent>
+            <xs:extension base="tns:EquityType">
+                <xs:sequence><xs:element name="votingRights" type="xs:boolean"/></xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="instrument" type="tns:InstrumentType" abstract="true"/>
+    <xs:element name="equity" type="tns:EquityType" substitutionGroup="tns:instrument"/>
+    <xs:element name="stock" type="tns:StockType" substitutionGroup="tns:equity"/>
+
+    <xs:element name="identifier" type="xs:string" abstract="true"/>
+    <xs:element name="passport" type="xs:string" substitutionGroup="tns:identifier"/>
+    <xs:element name="license" type="xs:string" substitutionGroup="tns:identifier"/>
+
+    <xs:complexType name="ExoticContainerType">
+        <xs:sequence>
+            <xs:element ref="tns:vehicle" maxOccurs="unbounded"/>
+            <xs:element ref="tns:instrument" maxOccurs="unbounded"/>
+            <xs:element ref="tns:identifier" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="exoticTest" type="tns:ExoticContainerType"/>
+</xs:schema>

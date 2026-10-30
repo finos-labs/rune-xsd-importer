@@ -1,0 +1,6 @@
+<globalAttributeReference xmlns="http://example.com/rune/attrref"
+                          xmlns:attr="http://example.com/rune/attrref"
+                          attr:globalCode="7"
+                          localFlag="true">
+    <name>abc</name>
+</globalAttributeReference>

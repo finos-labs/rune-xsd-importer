@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/rune/root-polymorphism"
+           xmlns:base="http://example.com/rune/root-polymorphism"
+           elementFormDefault="qualified">
+
+    <xs:complexType name="Root" abstract="true">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LocalRoot">
+        <xs:complexContent>
+            <xs:extension base="base:Root">
+                <xs:sequence>
+                    <xs:element name="localValue" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="root" type="base:Root"/>
+
+</xs:schema>

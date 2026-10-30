@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unionTest xmlns="http://example.com/rune/union">
+    <value>A</value>
+    <effectiveDate>NOT-A-DATE</effectiveDate>
+</unionTest>

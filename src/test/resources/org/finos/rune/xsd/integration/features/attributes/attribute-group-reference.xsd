@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/test/attrs/group"
+        targetNamespace="http://example.com/rune/test/attrs/group"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:attributeGroup name="CommonAttrs">
+        <xs:attribute name="agRequired" type="xs:string" use="required"/>
+        <xs:attribute name="agOptional" type="xs:int"/>
+        <xs:attribute name="agDefault" type="xs:string" default="AG_DEFAULT"/>
+        <xs:attribute name="agFixed" type="xs:string" fixed="AG_FIXED"/>
+    </xs:attributeGroup>
+
+    <xs:element name="testAttrGroup" type="tns:AttrGroupType"/>
+
+    <xs:complexType name="AttrGroupType">
+        <xs:sequence>
+            <xs:element name="value" type="xs:string"/>
+        </xs:sequence>
+
+        <xs:attributeGroup ref="tns:CommonAttrs"/>
+
+        <xs:attribute name="localAttr" type="xs:boolean" use="required"/>
+    </xs:complexType>
+
+</xs:schema>

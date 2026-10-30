@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:b="urn:example:inherited:base"
+           xmlns:d="urn:example:inherited:derived"
+           targetNamespace="urn:example:inherited:derived"
+           elementFormDefault="qualified">
+    <xs:import namespace="urn:example:inherited:base" schemaLocation="base.xsd"/>
+    <xs:complexType name="trade_derived">
+        <xs:complexContent>
+            <xs:extension base="b:trade_base">
+                <xs:sequence>
+                    <xs:element name="derivedValue" type="xs:string"/>
+                </xs:sequence>
+                <xs:attribute name="derivedId" type="xs:string"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="trade" type="d:trade_derived"/>
+</xs:schema>

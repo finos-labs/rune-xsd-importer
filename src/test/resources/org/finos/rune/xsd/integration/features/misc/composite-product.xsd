@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://example.com/rune/complex"
+           targetNamespace="http://example.com/rune/complex"
+           elementFormDefault="qualified">
+
+    <xs:element name="SkuCode">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="SKU-\d{5}"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:simpleType name="EmptyValue">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value=""/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="Description" type="xs:string"/>
+
+    <xs:group name="DimensionsGroup">
+        <xs:sequence>
+            <xs:element name="width" type="xs:decimal"/>
+            <xs:element name="height" type="xs:decimal"/>
+            <xs:element name="depth" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:complexType name="BaseProduct">
+        <xs:sequence>
+            <xs:element ref="tns:SkuCode"/>
+            <xs:element ref="tns:Description" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:ID" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="Product">
+        <xs:complexContent>
+            <xs:extension base="tns:BaseProduct">
+                <xs:sequence>
+                    <xs:group ref="tns:DimensionsGroup"/>
+                    <xs:element name="emptyValue" type="tns:EmptyValue"/>
+
+                    <xs:choice>
+                        <xs:element name="digitalDownloadUrl" type="xs:string"/>
+                        <xs:element name="shippingWeight" type="xs:decimal"/>
+                    </xs:choice>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="product" type="tns:Product"/>
+
+    <xs:element name="legacyProduct" type="tns:Product"/>
+
+    <xs:element name="Catalogue">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:product" maxOccurs="unbounded"/>
+                <xs:element ref="tns:legacyProduct" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

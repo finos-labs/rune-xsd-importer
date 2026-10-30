@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/rune/poly-extension"
+           xmlns:ext="http://example.com/rune/poly-extension"
+           xmlns:base="http://example.com/rune/polymorphism"
+           elementFormDefault="qualified">
+
+    <xs:import namespace="http://example.com/rune/polymorphism" schemaLocation="polymorphism-base.xsd"/>
+
+    <xs:complexType name="ExtendedType">
+        <xs:complexContent>
+            <xs:extension base="base:BaseType">
+                <xs:sequence>
+                    <xs:element name="extValue" type="xs:int"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="otherElement" type="ext:ExtendedType"/>
+</xs:schema>

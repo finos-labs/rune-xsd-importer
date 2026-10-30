@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/rune/polymorphism"
+           xmlns:base="http://example.com/rune/polymorphism"
+           elementFormDefault="qualified">
+
+    <xs:complexType name="BaseType" abstract="true">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LocalExtendedType">
+        <xs:complexContent>
+            <xs:extension base="base:BaseType">
+                <xs:sequence>
+                    <xs:element name="localValue" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DocumentType">
+        <xs:sequence>
+            <xs:element name="item" type="base:BaseType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="document" type="base:DocumentType"/>
+    <xs:element name="rootElement" type="base:BaseType"/>
+</xs:schema>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:document xmlns:base="http://example.com/rune/polymorphism"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <base:item xsi:type="base:LocalExtendedType">
+        <base:id>ID-NESTED-LOCAL</base:id>
+        <base:localValue>LOCAL-DATA</base:localValue>
+    </base:item>
+</base:document>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:t="urn:example:trade:form-defaults"
+        targetNamespace="urn:example:trade:form-defaults">
+
+    <xs:element name="globalElement" type="xs:string"/>
+    <xs:element name="trade" type="t:Trade"/>
+
+    <xs:complexType name="Trade">
+        <xs:sequence>
+            <xs:element name="defaultElement" type="xs:string"/>
+            <xs:element name="qualifiedElement" type="xs:string" form="qualified"/>
+            <xs:element name="unqualifiedElement" type="xs:string" form="unqualified"/>
+            <xs:element ref="t:globalElement"/>
+        </xs:sequence>
+        <xs:attribute name="version" type="xs:string" use="required"/>
+        <xs:attribute name="qualifiedSource" type="xs:string" form="qualified" use="required"/>
+        <xs:attribute name="unqualifiedSource" type="xs:string" form="unqualified" use="required"/>
+    </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://example.com/rune/attrgroupnest"
+        targetNamespace="http://example.com/rune/attrgroupnest"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xs:attributeGroup name="BaseAttrs">
+        <xs:attribute name="a1" type="xs:string" use="required"/>
+        <xs:attribute name="a2" type="xs:int"/>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="NestedAttrs">
+        <xs:attributeGroup ref="tns:BaseAttrs"/>
+        <xs:attribute name="a3" type="xs:boolean"/>
+    </xs:attributeGroup>
+
+    <xs:complexType name="AttrGroupNestType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+
+        <xs:attributeGroup ref="tns:NestedAttrs"/>
+        <xs:attribute name="localX" type="xs:token" use="optional"/>
+    </xs:complexType>
+
+    <xs:element name="attrGroupNestTest" type="tns:AttrGroupNestType"/>
+</xs:schema>

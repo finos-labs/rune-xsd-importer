@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:document xmlns:base="http://example.com/rune/polymorphism"
+               xmlns:ext="http://example.com/rune/poly-extension"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <base:item xsi:type="ext:ExtendedType">
+        <base:id>ID-NESTED-EXT</base:id>
+        <ext:extValue>99</ext:extValue>
+    </base:item>
+</base:document>

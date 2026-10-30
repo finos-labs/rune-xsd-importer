@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<restrictionTest xmlns="http://example.com/rune/restriction"
+>
+    <side>BUY</side>
+    <ccy>EUR</ccy>
+    <amount>123.45</amount>
+    <qty>10</qty>
+</restrictionTest>

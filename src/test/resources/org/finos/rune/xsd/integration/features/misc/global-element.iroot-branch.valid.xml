@@ -1,0 +1,5 @@
+<tns:InlineRoot
+        version="2"
+        xmlns:tns="http://example.com/global">
+    <tns:status>Active</tns:status>
+</tns:InlineRoot>

@@ -1,0 +1,7 @@
+<tns:Trade
+        xmlns:tns="http://example.com/nestedchoice"
+>
+    <tns:settlement>LME Cash</tns:settlement>
+    <tns:settlement>CME Futures</tns:settlement>
+    <tns:total>1250.75</tns:total>
+</tns:Trade>

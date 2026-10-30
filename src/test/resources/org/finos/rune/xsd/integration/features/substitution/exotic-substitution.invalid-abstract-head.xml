@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:exoticTest xmlns:tns="http://example.com/rune/exotic-subst">
+    <tns:vehicle>
+        <tns:make>Generic Motors</tns:make>
+    </tns:vehicle>
+    <tns:instrument>
+        <tns:id>ABSTRACT-HEAD</tns:id>
+    </tns:instrument>
+    <tns:passport>P123456</tns:passport>
+</tns:exoticTest>

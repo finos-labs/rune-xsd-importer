@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:zoo xmlns:tns="http://example.com/rune/subst">
+    <tns:dog>
+        <tns:name>Rex</tns:name>
+        <tns:barks>true</tns:barks>
+    </tns:dog>
+    <tns:cat>
+        <tns:name>Mittens</tns:name>
+        <tns:meows>false</tns:meows>
+    </tns:cat>
+</tns:zoo>

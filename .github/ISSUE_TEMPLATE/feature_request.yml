@@ -1,37 +1,130 @@
 name: 🚀 Feature Request
-description: I have a suggestion (and may want to implement it 🙂)!
+description: I have a suggestion for improving the Rune XSD Importer and may want to help implement it.
 title: "[Feature] "
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Please resist the temptation to describe your request in terms of a solution. Job Story form ("When [triggering condition], I want to [motivation/goal], so I can [outcome].") can help ensure you're expressing a problem statement.
+        Please describe the user problem before proposing an implementation. The importer provides representative, XSD 1.0-oriented support rather than complete W3C XSD coverage.
+
+        Review the [capability matrix](https://github.com/finos-labs/rune-xsd-importer/blob/main/documentation/docs/capability-matrix.md), [XSD 1.1 gap analysis](https://github.com/finos-labs/rune-xsd-importer/blob/main/documentation/docs/xsd-1.1-gap-analysis.md), and existing issues before submitting a request. 
+        
+        Do not use this form for security vulnerabilities; follow [SECURITY.md](https://github.com/finos-labs/rune-xsd-importer/blob/main/SECURITY.md) instead.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the repository issues and documentation for a related request.
+          required: true
+        - label: This request describes a user-visible capability or documentation improvement, not only an internal implementation change.
+          required: true
+        - label: Any schema or XML example is public or sanitized and contains no credentials, secrets, or confidential data.
+          required: true
+    validations:
+      required: true
+
   - type: textarea
     id: problem
     attributes:
       label: Description of Problem
-      description: What *problem* are you trying to solve that the project doesn't currently solve?
+      description: Describe who is affected and what outcome is currently unavailable. Job Story form can help: When [triggering condition], I want to [motivation or goal], so I can [outcome].
       placeholder: |
-        When [triggering condition], I want to [motivation/goal], so I can [outcome].
-        
-        Describe the problem clearly...
-    validations:
-      required: true
-  - type: textarea
-    id: solutions
-    attributes:
-      label: Potential Solutions
-      description: Clearly and concisely describe what you want to happen. Add any considered drawbacks. If you've considered alternatives, clearly and concisely describe those too.
-      placeholder: |
-        Proposed solution:
-        - Description
-        - Benefits
-        - Drawbacks
-        
-        Alternatives considered:
-        - Alternative 1
-        - Alternative 2
+        When ...
+        I want ...
+        So I can ...
+
+        Explain the user or integration impact in plain language.
     validations:
       required: true
 
+  - type: textarea
+    id: feature-context
+    attributes:
+      label: Feature Context and Scope
+      description: Describe the affected XSD construct, importer behavior, or workflow in plain language. Include the XSD version or construct name when known.
+      placeholder: |
+        Affected schema or workflow:
+        Relevant XSD construct, if known:
+        Example namespace or source system, if shareable:
+        What is currently missing or incomplete:
+    validations:
+      required: true
+
+  - type: textarea
+    id: existing-evidence
+    attributes:
+      label: Existing Documentation and Issue Check
+      description: Link the relevant capability-matrix or gap-analysis section, related repository or upstream Rune issue, and any supporting discussion. If no related issue exists, write “No matching issue found” and list the search terms used.
+      placeholder: |
+        Documentation link(s):
+        Related issue(s):
+        Search terms:
+        Result:
+    validations:
+      required: true
+
+  - type: textarea
+    id: representative-example
+    attributes:
+      label: Representative Example
+      description: Provide the smallest public or sanitized XSD, XML, Java API example, or fixture that demonstrates the need. Include imports or includes when they matter. If an example is not currently available, explain why and describe the affected workflow instead.
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: desired-behavior
+    attributes:
+      label: Desired Public Behavior
+      description: Describe what users should observe, without requiring a particular class or internal architecture. Where relevant, cover generated Rune, namespace-qualified identity, xml-config.json, XML serialization/deserialization, and diagnostics.
+      placeholder: |
+        The importer should ...
+
+        Expected generated model or XML behavior:
+        Expected diagnostic or rejection behavior:
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: List concrete checks that would demonstrate completion. Mark a check as not applicable with a reason when the feature does not affect that lifecycle.
+      placeholder: |
+        - [ ] A focused fixture or unit test covers the feature.
+        - [ ] Generated Rune output has the expected structure and compiles.
+        - [ ] xml-config.json preserves the required XML identity, when applicable.
+        - [ ] Valid XML deserializes and serializes as expected, when applicable.
+        - [ ] Invalid or unsupported cases fail or diagnose as expected, when applicable.
+        - [ ] Namespace, compatibility, and output changes are documented.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solutions
+    attributes:
+      label: Potential Solutions and Alternatives
+      description: Describe possible user-visible solutions, benefits, drawbacks, and alternatives. Do not turn an unverified internal design into a requirement. State whether the request may change the public Java API, generated Rune output, XML configuration, XML wire behavior, parser security, or generator lifecycle.
+      placeholder: |
+        Proposed outcome:
+        - Description
+        - Benefits
+        - Drawbacks
+
+        Alternatives considered:
+        - Alternative 1
+        - Alternative 2
+
+        Compatibility or security considerations:
+        Scope exclusions or non-goals:
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add links to public schemas, implementation proposals, user feedback, related pull requests, or other context that may help maintainers.
