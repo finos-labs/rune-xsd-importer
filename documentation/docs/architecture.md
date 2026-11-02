@@ -14,6 +14,8 @@ The importer separates schema inspection, qualified-reference validation, Rune m
 
 Use `XsdParserInspector` as the public inspection facade and `XsdParserJaxpFactory` as the parser construction path. Do not use a local-name-only lookup or direct third-party parser construction. The active mapper entry points are `DataMapper`, `EnumMapper`, and `TypeAliasMapper`; mapping and serialization remain separate from Rune model mutation.
 
+The deprecated `XsdParserInspector.getUnsolvedReferences()` exposes parser-dependent lexical reports for compatibility. `getPreflightUnsolvedReferences()` excludes a report only when every occurrence is demonstrably a supported built-in type in the XML Schema namespace; ambiguous reports still fail preflight. The two methods have different results and are not interchangeable for callers that need raw reports.
+
 The parser factory rejects `DOCTYPE`, external entity resolution, external DTD loading, XInclude, and entity expansion. It does not impose input-size, file-count, graph-depth, or node-count limits; hosting applications own those limits.
 
 `RuneBuiltinRegistry` maps supported XSD built-ins to Rune types, using `string` for built-ins whose restrictions are not represented separately. Unresolved user declarations do not use that fallback.

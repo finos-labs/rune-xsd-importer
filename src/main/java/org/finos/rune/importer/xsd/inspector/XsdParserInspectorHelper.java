@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmlet.xsdparser.core.XsdParser;
 import org.xmlet.xsdparser.core.utils.NamespaceInfo;
+import org.xmlet.xsdparser.core.utils.UnsolvedReferenceItem;
 import org.xmlet.xsdparser.xsdelements.*;
 import org.xmlet.xsdparser.xsdelements.xsdrestrictions.XsdEnumeration;
 
@@ -50,6 +51,7 @@ final class XsdParserInspectorHelper {
     private final Map<String, List<XsdAttribute>> globalAttributesByName;
     private final IdentityHashMap<XsdAbstractElement, XsdSchema> owningSchemas;
     private final List<String> unsolvedReferences;
+    private final List<UnsolvedReferenceItem> parserUnsolvedReferences;
 
     /**
      * Constructs a helper wrapper around the provided XSD parser model.
@@ -59,7 +61,8 @@ final class XsdParserInspectorHelper {
     XsdParserInspectorHelper(XsdParser parser) {
         XsdParser parsedSchema = Objects.requireNonNull(parser, "parser must not be null");
         this.schemas = parsedSchema.getResultXsdSchemas().toList();
-        this.unsolvedReferences = parsedSchema.getUnsolvedReferences().stream()
+        this.parserUnsolvedReferences = List.copyOf(parsedSchema.getUnsolvedReferences());
+        this.unsolvedReferences = parserUnsolvedReferences.stream()
                 .map(item -> item.getUnsolvedReference().getRef())
                 .filter(reference -> reference != null && !reference.isBlank())
                 .distinct()
@@ -138,8 +141,53 @@ final class XsdParserInspectorHelper {
                 .filter(s -> Objects.equals(s.getTargetNamespace(), namespace));
     }
 
+    /**
+     * @deprecated Raw parser reports are retained for facade compatibility;
+     * use {@link #getPreflightUnsolvedReferences()} for preflight diagnostics.
+     */
+    @Deprecated
     public List<String> getUnsolvedReferences() {
         return unsolvedReferences;
+    }
+
+    List<String> getPreflightUnsolvedReferences() {
+        return parserUnsolvedReferences.stream()
+                .filter(item -> !isKnownBuiltinTypeReference(item))
+                .map(item -> item.getUnsolvedReference().getRef())
+                .filter(reference -> reference != null && !reference.isBlank())
+                .distinct()
+                .toList();
+    }
+
+    private boolean isKnownBuiltinTypeReference(UnsolvedReferenceItem item) {
+        var reference = item.getUnsolvedReference();
+        String raw = reference.getRef();
+        if (!reference.isTypeRef() || raw == null || raw.isBlank() || raw.contains(":")) return false;
+        if (RuneBuiltinRegistry.primitiveFamily(RegistryKey.of(XSD_NS, raw)).isEmpty()) return false;
+        List<XsdAbstractElement> parents = item.getParents();
+        return parents != null && !parents.isEmpty()
+                && parents.stream().allMatch(parent -> isBuiltinTypeOccurrence(parent, raw));
+    }
+
+    private boolean isBuiltinTypeOccurrence(XsdAbstractElement parent, String raw) {
+        if (parent == null) return false;
+        String attribute = (parent instanceof XsdRestriction || parent instanceof XsdExtension) ? "base"
+                : (parent instanceof XsdElement || parent instanceof XsdAttribute) ? "type" : null;
+        if (attribute == null || !raw.equals(rawAttributeValue(parent, attribute))
+                || raw.equals(rawAttributeValue(parent, "ref"))) return false;
+        // A local namespace declaration can override the schema's binding. Use it
+        // when present, and fail closed if the owning schema is unavailable.
+        XsdAbstractElement current = parent;
+        Set<XsdAbstractElement> visited = Collections.newSetFromMap(new IdentityHashMap<>());
+        while (current != null && visited.add(current)) {
+            String localDefault = current.getAttributesMap().get("xmlns");
+            if (localDefault != null) return XSD_NS.equals(localDefault);
+            current = current.getParent();
+        }
+        XsdSchema schema = findOwningSchema(parent);
+        if (schema == null || schema.getNamespaces() == null) return false;
+        NamespaceInfo namespace = schema.getNamespaces().get("xmlns");
+        return namespace != null && XSD_NS.equals(namespace.getName());
     }
 
     /**

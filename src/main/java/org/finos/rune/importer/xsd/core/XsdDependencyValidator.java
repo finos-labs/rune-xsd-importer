@@ -29,7 +29,7 @@ public final class XsdDependencyValidator {
                 .collect(java.util.stream.Collectors.toSet());
 
         List<String> errors = new ArrayList<>();
-        inspector.getUnsolvedReferences().forEach(reference ->
+        inspector.getPreflightUnsolvedReferences().forEach(reference ->
                 errors.add("unresolved required reference '" + reference + "' reported by parser"));
         errors.addAll(validateGraph(declarations, dependencies, rootNamespaces));
         if (!errors.isEmpty()) {
@@ -92,7 +92,8 @@ public final class XsdDependencyValidator {
                 errors.add("invalid required reference '" + dependency.targetQName() + "' from " + dependency.context());
                 continue;
             }
-            if (RuneBuiltinRegistry.primitiveFamily(target).isPresent()) {
+            if (dependency.targetRole() == XsdDeclarationRole.TYPE
+                    && RuneBuiltinRegistry.primitiveFamily(target).isPresent()) {
                 continue;
             }
             XsdDeclaration targetDeclaration = new XsdDeclaration(target, dependency.targetRole());
@@ -154,7 +155,8 @@ public final class XsdDependencyValidator {
                             + "' from " + dependency.context());
                     return false;
                 }
-                if (RuneBuiltinRegistry.primitiveFamily(dependencyTarget).isPresent()) {
+                if (dependency.targetRole() == XsdDeclarationRole.TYPE
+                        && RuneBuiltinRegistry.primitiveFamily(dependencyTarget).isPresent()) {
                     continue;
                 }
                 XsdDeclaration targetDeclaration = new XsdDeclaration(

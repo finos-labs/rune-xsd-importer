@@ -2,6 +2,7 @@ package org.finos.rune.importer.xsd.core;
 
 import org.finos.rune.importer.xsd.inspector.*;
 import org.finos.rune.importer.xsd.registry.RegistryKey;
+import org.finos.rune.importer.xsd.registry.RuneBuiltinRegistry;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -76,6 +77,18 @@ class XsdDependencyValidatorTest {
                 error.contains("wrongTargetType")
                         && error.contains("expectedType=TYPE")
                         && error.contains("ELEMENT")));
+    }
+
+    @Test
+    void builtinTypeIdentityDoesNotSatisfyGroupReference() {
+        RegistryKey source = RegistryKey.of(SOURCE_NS, "UsesGroup");
+        RegistryKey builtin = RegistryKey.of(RuneBuiltinRegistry.XSD_NS, "string");
+        List<String> errors = XsdDependencyValidator.validateGraph(
+                Set.of(type(source)),
+                List.of(new XsdDependency(type(source), builtin.toString(), XsdDeclarationRole.GROUP,
+                        "group reference", XsdDependencyType.GROUP_REFERENCE)),
+                Set.of(SOURCE_NS));
+        assertTrue(errors.stream().anyMatch(error -> error.contains("expectedType=GROUP")));
     }
 
     @Test

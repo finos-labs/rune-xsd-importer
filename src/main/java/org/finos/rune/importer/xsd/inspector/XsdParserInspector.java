@@ -108,10 +108,24 @@ public class XsdParserInspector {
 
     /**
      * Returns lexical references that the parser could not resolve after loading the schema set.
-     * These references must fail dependency preflight rather than be silently omitted from mapping.
+     * This preserves the parser's lexical reports, including any that preflight
+     * can independently establish are valid built-in type references.
+     *
+     * @deprecated These parser-dependent reports are not preflight diagnostics.
+     * Use {@link #getPreflightUnsolvedReferences()} when checking which parser
+     * reports require rejection; its result intentionally differs.
      */
+    @Deprecated
     public List<String> getUnsolvedReferences() {
         return helper.getUnsolvedReferences();
+    }
+
+    /**
+     * Returns parser reports requiring preflight rejection after proven built-in
+     * type references are excluded. Ambiguous reports remain unresolved.
+     */
+    public List<String> getPreflightUnsolvedReferences() {
+        return helper.getPreflightUnsolvedReferences();
     }
 
 

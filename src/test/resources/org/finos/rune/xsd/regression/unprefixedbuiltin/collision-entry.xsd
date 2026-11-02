@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="urn:example:collision-entry">
+    <import namespace="urn:example:collision-user" schemaLocation="collision-user.xsd"/>
+    <simpleType name="EncodedValue"><restriction base="base64Binary"/></simpleType>
+</schema>
