@@ -110,6 +110,10 @@ For contribution requirements, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Please report bugs and feature gaps through the project’s [issue tracker](https://github.com/finos-labs/rune-xsd-importer/issues), including a minimal XSD and XML reproducer where applicable.
 
+## Get Involved
+
+Join the project mailing list by sending an email to rune-xsd-importer+subscribe@lists.finos.org.
+
 ## License
 
 Copyright 2026 FINOS
