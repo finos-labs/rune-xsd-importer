@@ -112,7 +112,8 @@ Please report bugs and feature gaps through the project’s [issue tracker](http
 
 ## Get Involved
 
-Join the project mailing list by sending an email to rune-xsd-importer+subscribe@lists.finos.org.
+* **Mailing List:** Subscribe by sending a blank email to [rune-xsd-importer+subscribe@lists.finos.org](mailto:rune-xsd-importer+subscribe@lists.finos.org).
+* **Slack:** Join the [#rune-xsd-importer](https://finos-lf.slack.com/archives/C0CG8UBGF9A) channel. If you do not have access to the FINOS Slack workspace, contact [help@finos.org](mailto:help@finos.org) to request an invitation.
 
 ## License
 
