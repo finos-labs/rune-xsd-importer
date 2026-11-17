@@ -1,7 +1,9 @@
 package org.finos.rune.importer.xsd.builder.serialization;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.rosetta.model.lib.ModelSymbolId;
 import com.rosetta.util.serialisation.RosettaXMLConfiguration;
 import com.rosetta.util.serialisation.TypeXMLConfiguration;
@@ -16,6 +18,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class XsdRuneModuleTest {
 
     private static final String TYPE_NAMESPACE = "http://example.com/module/type";
+
+    @Test
+    void rejectsRegistrationOnANonXmlMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> mapper.registerModule(new XsdRuneModule(null)));
+
+        assertTrue(exception.getMessage().contains("XmlMapper"));
+    }
 
     @Test
     void customPolymorphicIntrospectionTakesPrecedenceOverStandardXmlMapperBehavior() throws Exception {
@@ -33,6 +45,7 @@ class XsdRuneModuleTest {
 
         XmlMapper configuredMapper = new XmlMapper();
         configuredMapper.registerModule(new XsdRuneModule(configuration));
+        assertTrue(configuredMapper.getFactory().isEnabled(FromXmlParser.Feature.AUTO_DETECT_XSI_TYPE));
         Object configuredValue = configuredMapper.readValue(
                 xml,
                 XsdPolymorphicIntrospectorTest.BaseType.class);
