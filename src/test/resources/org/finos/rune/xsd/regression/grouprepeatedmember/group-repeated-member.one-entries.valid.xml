@@ -1,0 +1,5 @@
+<document xmlns="http://example.com/group-repeated-member">
+    <entry>first</entry>
+    <label>example</label>
+    <swap><id>other element</id></swap>
+</document>

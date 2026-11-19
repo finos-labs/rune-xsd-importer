@@ -1,12 +1,12 @@
 # Capability Matrix
 
-This matrix describes representative fixture coverage. **Verified** means the listed shape is exercised by the integration suite; it does not mean every variation is supported. **Partial** means a mapping exists but material semantics remain unverified.
+This matrix describes representative fixture coverage. **Verified** means an integration test or focused regression exercises the listed shape. **Partial** means a mapping exists but material semantics remain unverified.
 
 | Area | Status | Verified scope or boundary |
 | --- | --- | --- |
 | Qualified identity and imports | Verified | Types, elements, and groups use namespace URI plus local name; selected cross-namespace imports are covered. |
 | Complex types and global elements | Verified | Global types and elements, direct qualified element/type relationships, proxy types, and native wrappers. |
-| Attributes and groups | Verified | Direct attributes, global attribute references, attribute groups, nested groups, and reusable model groups. |
+| Attributes and groups | Verified | Direct attributes, global attribute references, attribute groups, nested groups, and reusable model groups. Round-trip coverage includes a same-namespace virtual group with zero, one, and two occurrences of a directly repeated string element. |
 | Simple types | Verified | Representative string and numeric restrictions, enumerations, simple content, lists, and unions. |
 | Extensions | Partial | Representative simple/complex and cross-namespace extensions; broader chains, restrictions, and mixed content are not established. |
 | Choices | Partial | Direct, grouped, nested, and selected cardinalities; repeated alternative order and native Rune choices are not preserved. |

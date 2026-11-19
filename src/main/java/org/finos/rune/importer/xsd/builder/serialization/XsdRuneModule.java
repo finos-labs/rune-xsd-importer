@@ -48,6 +48,9 @@ public class XsdRuneModule extends SimpleModule {
         }
         // Keep the expanded XSI attribute distinguishable from ordinary attributes named "type".
         xmlMapper.configure(FromXmlParser.Feature.AUTO_DETECT_XSI_TYPE, true);
+        if (xmlConfig != null) {
+            context.addBeanDeserializerModifier(new XsdVirtualGroupDeserializerModifier(xmlConfig));
+        }
 
         AnnotationIntrospector pairedIntrospector = AnnotationIntrospectorPair.pair(
                 new XsdAttributeNamespaceIntrospector(xmlConfig),

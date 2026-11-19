@@ -14,6 +14,8 @@ Run the full verification lifecycle with:
 mvn verify
 ```
 
+Maven Failsafe runs public integration tests and focused regression tests in separate executions during `mvn verify`.
+
 Integration scenarios can validate source XML, generate Rune and `xml-config.json`, compile generated Rune models, validate generated XML, and round-trip representative XML. Each scenario selects the checks relevant to its schema shape.
 
 Structural XML comparisons are scenario-specific. URI-level regression assertions cover selected qualified elements and attributes, root-only namespace declarations, and nested `xsi:type` values. They do not require exact prefix spelling. Root polymorphism round-trip and effective local `form` qualification remain pending.
