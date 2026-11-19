@@ -7,31 +7,29 @@ import com.fasterxml.jackson.core.type.WritableTypeId;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+import com.regnosys.rosetta.common.serialisation.xml.SubstitutionMap;
 import java.io.IOException;
 
 /**
  * Writes an XSD {@code xsi:type} attribute for a nested runtime subtype.
  *
  * <p>The XML root element and its payload type remain separate concerns. This
- * serializer therefore only adds type metadata when the runtime type differs
- * from the declared static type; it does not provide root-polymorphism
- * behavior.</p>
+ * serializer adds type metadata when the runtime type differs from the type
+ * declared by the element being written.</p>
  */
 final class XsdTypeAttributeSerializer extends TypeSerializer {
 
     private final XsdTypeIdResolver typeIdResolver;
-    private final BeanProperty property;
+    private final SubstitutionMap substitutions;
 
-    XsdTypeAttributeSerializer(XsdTypeIdResolver typeIdResolver, BeanProperty property) {
+    XsdTypeAttributeSerializer(XsdTypeIdResolver typeIdResolver, SubstitutionMap substitutions) {
         this.typeIdResolver = typeIdResolver;
-        this.property = property;
+        this.substitutions = substitutions;
     }
 
     @Override
     public TypeSerializer forProperty(BeanProperty property) {
-        return property == this.property
-                ? this
-                : new XsdTypeAttributeSerializer(typeIdResolver, property);
+        return this;
     }
 
     @Override
@@ -55,8 +53,11 @@ final class XsdTypeAttributeSerializer extends TypeSerializer {
             throw new IOException("XSD xsi:type can only be written for object values");
         }
         generator.writeStartObject(typeId.forValue);
-        if (typeIdResolver.requiresTypeId(typeId.forValue)) {
-            writeXsiType(generator, typeIdResolver.idFromValue(typeId.forValue));
+        String id = substitutions == null
+                ? typeIdResolver.idFromValue(typeId.forValue)
+                : typeIdResolver.idForSubstitution(typeId.forValue, substitutions);
+        if (id != null) {
+            writeXsiType(generator, id);
         }
         return typeId;
     }

@@ -134,7 +134,7 @@ public final class XsdAttributeNamespaceIntrospector extends JacksonXmlAnnotatio
 
         String localName = localName(xmlName);
         Optional<String> namespace = configuration.getElementRef().flatMap(this::namespacePart);
-        if (isSubstitutionGroupHead(configuration)) {
+        if (isSubstitutionGroupHead(xmlConfig, configuration)) {
             // Rosetta's substitution-aware XML property needs the URI-based name during deserializer construction
             return qualifiedPropertyName(configuration);
         }
@@ -160,7 +160,7 @@ public final class XsdAttributeNamespaceIntrospector extends JacksonXmlAnnotatio
         return Optional.of(PropertyName.construct(localName));
     }
 
-    private boolean isSubstitutionGroupHead(AttributeXMLConfiguration configuration) {
+    static boolean isSubstitutionGroupHead(RosettaXMLConfiguration xmlConfig, AttributeXMLConfiguration configuration) {
         String elementReference = configuration.getElementRef().orElse(null);
         if (elementReference == null || xmlConfig == null || xmlConfig.getTypeConfigMap() == null) {
             return false;

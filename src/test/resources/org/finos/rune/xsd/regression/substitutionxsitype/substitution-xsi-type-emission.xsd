@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://example.com/substitution-xsi-type"
+           targetNamespace="http://example.com/substitution-xsi-type"
+           elementFormDefault="qualified">
+    <xs:complexType name="Product" abstract="true">
+        <xs:sequence>
+            <xs:element name="identifier" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Swap">
+        <xs:complexContent>
+            <xs:extension base="tns:Product">
+                <xs:sequence>
+                    <xs:element name="notional" type="xs:decimal"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="SpecialSwap">
+        <xs:complexContent>
+            <xs:extension base="tns:Swap">
+                <xs:sequence>
+                    <xs:element name="specialTerms" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="product" type="tns:Product" abstract="true"/>
+    <xs:element name="swap" type="tns:Swap" substitutionGroup="tns:product"/>
+
+    <xs:complexType name="Trade">
+        <xs:sequence>
+            <xs:element ref="tns:product"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="trade" type="tns:Trade"/>
+</xs:schema>

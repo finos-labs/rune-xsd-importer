@@ -15,6 +15,8 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.jsontype.impl.AsPropertyTypeDeserializer;
 import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
 import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+import com.regnosys.rosetta.common.serialisation.xml.SubstitutionMap;
+import com.regnosys.rosetta.common.serialisation.xml.SubstitutionMapLoader;
 import com.rosetta.model.lib.ModelSymbolId;
 import com.rosetta.model.lib.annotations.RosettaAttribute;
 import com.rosetta.model.lib.annotations.RuneDataType;
@@ -28,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 public class XsdPolymorphicIntrospector extends JacksonAnnotationIntrospector {
 
@@ -45,48 +48,85 @@ public class XsdPolymorphicIntrospector extends JacksonAnnotationIntrospector {
             // A virtual group has no tag of its own. The parser may be positioned at a sibling.
             return StdTypeResolverBuilder.noTypeInfoBuilder();
         }
+        SubstitutionMap substitutions = serializationSubstitutions(config, member, baseType);
+        if (substitutions != null) {
+            return typeResolver(baseType, substitutions);
+        }
         return super.findPropertyTypeResolver(config, member, baseType);
     }
 
-    static boolean isVirtualProperty(RosettaXMLConfiguration configuration, AnnotatedMember member) {
-        if (configuration == null || member == null) {
-            return false;
+    private SubstitutionMap serializationSubstitutions(MapperConfig<?> config, AnnotatedMember member, JavaType type) {
+        if (!(config instanceof SerializationConfig) || type == null
+                || type.getRawClass().getAnnotation(RuneDataType.class) == null
+                || attributeConfiguration(xmlConfig, member)
+                .filter(attribute -> XsdAttributeNamespaceIntrospector.isSubstitutionGroupHead(xmlConfig, attribute))
+                .isEmpty()) {
+            return null;
         }
-        RosettaAttribute attribute = member.getAnnotation(RosettaAttribute.class);
-        String modelName = XsdUnionIntrospector.modelQualifiedName(member.getDeclaringClass());
-        return attribute != null && configuration.getConfigurationForType(ModelSymbolId.fromQualifiedName(modelName))
-                .flatMap(TypeXMLConfiguration::getAttributes)
-                .map(attributes -> attributes.get(attribute.value()))
+        ClassLoader classLoader = config.getTypeFactory().getClassLoader();
+        if (classLoader == null) {
+            classLoader = member.getDeclaringClass().getClassLoader();
+        }
+        return new SubstitutionMapLoader(classLoader)
+                .findSubstitutionMap(config, config.getAnnotationIntrospector(), member);
+    }
+
+    static boolean isVirtualProperty(RosettaXMLConfiguration configuration, AnnotatedMember member) {
+        return attributeConfiguration(configuration, member)
                 .flatMap(AttributeXMLConfiguration::getXmlRepresentation)
                 .filter(AttributeXMLRepresentation.VIRTUAL::equals)
                 .isPresent();
     }
 
+    private static Optional<AttributeXMLConfiguration> attributeConfiguration(
+            RosettaXMLConfiguration configuration, AnnotatedMember member) {
+        if (configuration == null || member == null) {
+            return Optional.empty();
+        }
+        RosettaAttribute attribute = member.getAnnotation(RosettaAttribute.class);
+        if (attribute == null) {
+            return Optional.empty();
+        }
+        String modelName = XsdUnionIntrospector.modelQualifiedName(member.getDeclaringClass());
+        return configuration.getConfigurationForType(ModelSymbolId.fromQualifiedName(modelName))
+                .flatMap(TypeXMLConfiguration::getAttributes)
+                .map(attributes -> attributes.get(attribute.value()));
+    }
+
     @Override
     public TypeResolverBuilder<?> findTypeResolver(MapperConfig<?> config, AnnotatedClass ac, JavaType baseType) {
         if (baseType.getRawClass().getAnnotation(RuneDataType.class) != null) {
-            // Custom resolver builders preserve qualified XSD type identity on both XML reads and writes.
-            XsdTypeIdResolver typeIdResolver = new XsdTypeIdResolver(baseType, xmlConfig);
-            return new XsdTypeResolverBuilder()
-                    .init(JsonTypeInfo.Id.CUSTOM, typeIdResolver)
-                    .inclusion(JsonTypeInfo.As.PROPERTY)
-                    .typeProperty("xsi:type")
-                    .defaultImpl(baseType.getRawClass());
+            return typeResolver(baseType, null);
         }
         return super.findTypeResolver(config, ac, baseType);
+    }
+
+    private TypeResolverBuilder<?> typeResolver(JavaType baseType, SubstitutionMap substitutions) {
+        return new XsdTypeResolverBuilder(substitutions)
+                .init(JsonTypeInfo.Id.CUSTOM, new XsdTypeIdResolver(baseType, xmlConfig))
+                .inclusion(JsonTypeInfo.As.PROPERTY)
+                .typeProperty("xsi:type")
+                .defaultImpl(baseType.getRawClass());
     }
 
     /**
      * Custom Builder to inject our XML Tag-Aware Deserializer
      */
     private static class XsdTypeResolverBuilder extends StdTypeResolverBuilder {
+        private final SubstitutionMap substitutions;
+
+        private XsdTypeResolverBuilder(SubstitutionMap substitutions) {
+            this.substitutions = substitutions;
+        }
+
         @Override
         public TypeSerializer buildTypeSerializer(
                 SerializationConfig config,
                 JavaType baseType,
                 Collection<NamedType> subtypes) {
-            if (_customIdResolver instanceof XsdTypeIdResolver resolver && resolver.supportsTypeIdOutput()) {
-                return new XsdTypeAttributeSerializer(resolver, null);
+            if (_customIdResolver instanceof XsdTypeIdResolver resolver
+                    && (substitutions != null || resolver.supportsTypeIdOutput())) {
+                return new XsdTypeAttributeSerializer(resolver, substitutions);
             }
             return null;
         }
