@@ -41,7 +41,7 @@ final class XsdTypeAttributeSerializer extends TypeSerializer {
 
     @Override
     public String getPropertyName() {
-        return "type";
+        return "xsi:type";
     }
 
     @Override

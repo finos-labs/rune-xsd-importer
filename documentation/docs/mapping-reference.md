@@ -20,7 +20,7 @@ Generated identifiers are deterministic but not collision-free. Distinct source 
 
 ## XML configuration
 
-`xml-config.json` is the source of truth for XML names, namespace URIs, element references, attributes, and virtual group composition. Load it with `XsdRuneModule` at runtime; do not reconstruct XML identity from Rune or Java property names.
+`xml-config.json` is the source of truth for XML names, namespace URIs, element references, attributes, and virtual group composition. Load it with `XsdRuneModule` at runtime and register that XML-only Jackson module on an `XmlMapper`; do not reconstruct XML identity from Rune or Java property names.
 
 Qualified elements and attributes retain their namespace URI. Unqualified local attributes remain unqualified. Root namespace declarations are emitted only on document-root candidates. Exact prefix spelling is not part of the contract.
 

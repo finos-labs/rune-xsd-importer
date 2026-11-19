@@ -1,0 +1,33 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://example.com/ordinary-type"
+           targetNamespace="http://example.com/ordinary-type"
+           elementFormDefault="qualified">
+    <xs:element name="document" type="tns:Document"/>
+    <xs:complexType name="Document">
+        <xs:sequence>
+            <xs:element name="ordinaryItem" type="tns:OrdinaryItem" minOccurs="0"/>
+            <xs:element name="polymorphicItem" type="tns:PolymorphicItem" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="OrdinaryItem">
+        <xs:sequence>
+            <xs:element name="value" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="PolymorphicItem" abstract="true">
+        <xs:sequence>
+            <xs:element name="value" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DerivedPolymorphicItem">
+        <xs:complexContent>
+            <xs:extension base="tns:PolymorphicItem">
+                <xs:sequence>
+                    <xs:element name="extra" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+                <xs:attribute name="type" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

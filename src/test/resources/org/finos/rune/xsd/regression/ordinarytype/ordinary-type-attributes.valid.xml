@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://example.com/ordinary-type"
+          xmlns:instance="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:tns="http://example.com/ordinary-type">
+    <!-- This type attribute is ordinary model data; this element has no xsi:type. -->
+    <ordinaryItem type="business-value">
+        <value>ordinary</value>
+    </ordinaryItem>
+    <!-- This element carries the same ordinary data attribute and a true xsi:type. -->
+    <polymorphicItem type="business-value" instance:type="tns:DerivedPolymorphicItem">
+        <value>polymorphic</value>
+        <extra>derived</extra>
+    </polymorphicItem>
+</document>

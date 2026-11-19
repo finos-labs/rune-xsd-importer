@@ -40,7 +40,7 @@ public class XsdPolymorphicIntrospector extends JacksonAnnotationIntrospector {
             return new XsdTypeResolverBuilder()
                     .init(JsonTypeInfo.Id.CUSTOM, typeIdResolver)
                     .inclusion(JsonTypeInfo.As.PROPERTY)
-                    .typeProperty("type")
+                    .typeProperty("xsi:type")
                     .defaultImpl(baseType.getRawClass());
         }
         return super.findTypeResolver(config, ac, baseType);
