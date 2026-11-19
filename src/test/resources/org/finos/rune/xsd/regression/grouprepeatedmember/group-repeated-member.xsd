@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://example.com/group-repeated-member"
+           targetNamespace="http://example.com/group-repeated-member"
+           elementFormDefault="qualified">
+    <xs:group name="Entries.model">
+        <xs:sequence>
+            <xs:element name="entry" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="label" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:group>
+    <xs:complexType name="Document">
+        <xs:sequence>
+            <xs:group ref="tns:Entries.model"/>
+            <xs:element ref="tns:swap" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="document" type="tns:Document"/>
+    <xs:complexType name="Swap">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="swap" type="tns:Swap"/>
+</xs:schema>

@@ -4,7 +4,7 @@ Generation produces Rune models and a separate `xml-config.json`. The configurat
 
 ## Use the generated configuration
 
-Call `EmfRuneGenerator.saveXmlConfiguration(...)` after generation. Load the resulting file into `RosettaXMLConfiguration` and register `XsdRuneModule` with the XML mapper. The configuration supplies namespace-aware attribute, polymorphism, and union behavior.
+Call `EmfRuneGenerator.saveXmlConfiguration(...)` after generation. Load the resulting file into `RosettaXMLConfiguration` and register `XsdRuneModule` with an `XmlMapper`. The configuration supplies namespace-aware attribute, polymorphism, and union behavior.
 
 Key fields include:
 
@@ -14,6 +14,10 @@ Key fields include:
 - `xmlElementFullyQualifiedName` and root `xmlAttributes` for generated root metadata.
 
 The generator creates a missing parent directory for `saveXmlConfiguration(...)`. Direct use of `XmlConfigurationJsonWriter` requires an existing parent directory, a non-null configuration, and a destination ending in lowercase `.json`; it overwrites an existing file.
+
+## Virtual model groups
+
+A property with `xmlRepresentation` set to `VIRTUAL` groups members in the Rune model. In XML, those members appear directly under the owning element. During deserialization, the runtime skips XML type resolution for the virtual property itself because it has no XML tag of its own.
 
 ## Namespace and polymorphism boundaries
 
