@@ -1,5 +1,7 @@
 package org.finos.rune.importer.xsd.regression;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.rosetta.model.lib.RosettaModelObject;
 import org.finos.rune.importer.xsd.XmlSerializationContractAssertions;
 import org.finos.rune.importer.xsd.XsdValidationUtils;
@@ -20,6 +22,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,7 +39,29 @@ class RepeatedSubstitutionXsiTypeRegressionTest extends AbstractRuneIntegrationT
     private static final String RUNE_PACKAGE = "com.example.substitutionxsitype";
 
     @Test
-    void preservesSubstitutionTagsAndEmitsTypeOnlyForTheDerivedListItem() throws Exception {
+    void preservesSubstitutionTagsAndTypesWithGeneratedConfiguration() throws Exception {
+        Path generatedConfig = getScenarioState().generatedOutput().resolve(CONFIG);
+        assertMixedListRoundTrip(generatedConfig, "mixed-swap-list.generated.roundtrip.xml");
+    }
+
+    @Test
+    void preservesSubstitutionTagsAndTypesWithAdjustedConfiguration() throws Exception {
+        Path generatedConfig = getScenarioState().generatedOutput().resolve(CONFIG);
+        ObjectMapper json = new ObjectMapper();
+        ObjectNode configuration = assertInstanceOf(ObjectNode.class, json.readTree(generatedConfig.toFile()));
+        ObjectNode product = assertInstanceOf(ObjectNode.class, configuration.path(RUNE_PACKAGE + ".Product"));
+
+        // Identify the abstract head by its type QName, as in the scalar regression.
+        assertTrue(product.path("abstract").asBoolean(), "Expected Product to remain abstract");
+        product.remove("xmlElementName");
+        product.put("xmlElementFullyQualifiedName", NAMESPACE + "/Product");
+
+        Path adjustedConfig = generatedConfig.resolveSibling("adjusted-xml-config.json");
+        json.writeValue(adjustedConfig.toFile(), configuration);
+        assertMixedListRoundTrip(adjustedConfig, "mixed-swap-list.adjusted.roundtrip.xml");
+    }
+
+    private void assertMixedListRoundTrip(Path configuration, String outputFilename) throws Exception {
         var schema = getSourceSchema(XSD);
         XsdValidationUtils.validate(schema, INPUT);
 
@@ -48,7 +73,7 @@ class RepeatedSubstitutionXsiTypeRegressionTest extends AbstractRuneIntegrationT
         assertNotNull(swapClass, "Expected generated Swap model");
         assertNotNull(specialSwapClass, "Expected generated SpecialSwap model");
 
-        var mapper = getXmlMapper(state.generatedOutput().resolve(CONFIG), tradeClass.getClassLoader());
+        var mapper = getXmlMapper(configuration, tradeClass.getClassLoader());
         String original = Files.readString(INPUT);
         RosettaModelObject trade = mapper.readValue(original, tradeClass);
         var products = (List<?>) tradeClass.getMethod("getProduct").invoke(trade);
@@ -58,7 +83,7 @@ class RepeatedSubstitutionXsiTypeRegressionTest extends AbstractRuneIntegrationT
                 .toList(), "Expected the middle list item to deserialize as SpecialSwap");
 
         String serialized = mapper.writeValueAsString(trade);
-        Path output = Files.writeString(state.generatedOutput().resolve("mixed-swap-list.roundtrip.xml"), serialized);
+        Path output = Files.writeString(state.generatedOutput().resolve(outputFilename), serialized);
         assertAll("serialized list",
                 () -> assertSwapTagsAndTypes(output),
                 () -> XmlSerializationContractAssertions.assertRootScopedNamespaceDeclarations(serialized),
