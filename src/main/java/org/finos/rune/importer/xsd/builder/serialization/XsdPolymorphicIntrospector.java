@@ -1,10 +1,12 @@
 package org.finos.rune.importer.xsd.builder.serialization;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.util.JsonParserDelegate;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
+import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
@@ -14,9 +16,11 @@ import com.fasterxml.jackson.databind.jsontype.TypeResolverBuilder;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.jsontype.impl.AsPropertyTypeDeserializer;
 import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
+import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.regnosys.rosetta.common.serialisation.xml.SubstitutionMap;
 import com.regnosys.rosetta.common.serialisation.xml.SubstitutionMapLoader;
+import com.regnosys.rosetta.common.serialisation.xml.serialization.UnwrappableIndexedListSerializer;
 import com.rosetta.model.lib.ModelSymbolId;
 import com.rosetta.model.lib.annotations.RosettaAttribute;
 import com.rosetta.model.lib.annotations.RuneDataType;
@@ -30,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class XsdPolymorphicIntrospector extends JacksonAnnotationIntrospector {
@@ -39,6 +44,17 @@ public class XsdPolymorphicIntrospector extends JacksonAnnotationIntrospector {
 
     public XsdPolymorphicIntrospector(RosettaXMLConfiguration xmlConfig) {
         this.xmlConfig = xmlConfig;
+    }
+
+    @Override
+    public Object findSerializer(Annotated annotated) {
+        Object explicitSerializer = super.findSerializer(annotated);
+        if (explicitSerializer == null && annotated instanceof AnnotatedMember member
+                && List.class.isAssignableFrom(member.getRawType())
+                && isSubstitutionProperty(member, member.getType().getContentType())) {
+            return new SubstitutionListBinding();
+        }
+        return explicitSerializer;
     }
 
     @Override
@@ -56,11 +72,7 @@ public class XsdPolymorphicIntrospector extends JacksonAnnotationIntrospector {
     }
 
     private SubstitutionMap serializationSubstitutions(MapperConfig<?> config, AnnotatedMember member, JavaType type) {
-        if (!(config instanceof SerializationConfig) || type == null
-                || type.getRawClass().getAnnotation(RuneDataType.class) == null
-                || attributeConfiguration(xmlConfig, member)
-                .filter(attribute -> XsdAttributeNamespaceIntrospector.isSubstitutionGroupHead(xmlConfig, attribute))
-                .isEmpty()) {
+        if (!(config instanceof SerializationConfig) || !isSubstitutionProperty(member, type)) {
             return null;
         }
         ClassLoader classLoader = config.getTypeFactory().getClassLoader();
@@ -69,6 +81,38 @@ public class XsdPolymorphicIntrospector extends JacksonAnnotationIntrospector {
         }
         return new SubstitutionMapLoader(classLoader)
                 .findSubstitutionMap(config, config.getAnnotationIntrospector(), member);
+    }
+
+    private boolean isSubstitutionProperty(AnnotatedMember member, JavaType type) {
+        return type != null && type.getRawClass().getAnnotation(RuneDataType.class) != null
+                && attributeConfiguration(xmlConfig, member)
+                        .filter(attribute -> XsdAttributeNamespaceIntrospector.isSubstitutionGroupHead(xmlConfig, attribute))
+                        .isPresent();
+    }
+
+    private final class SubstitutionListBinding extends JsonSerializer<Object> implements ContextualSerializer {
+        @Override
+        public JsonSerializer<?> createContextual(SerializerProvider provider, BeanProperty property)
+                throws JsonMappingException {
+            JavaType listType = property.getType();
+            JavaType itemType = listType.getContentType();
+            SubstitutionMap substitutions = serializationSubstitutions(provider.getConfig(), property.getMember(), itemType);
+            if (substitutions == null) {
+                return provider.findValueSerializer(listType, property);
+            }
+
+            // Rune's property writer supplies the tag selection map directly to this list serializer.
+            XsdTypeIdResolver resolver = new XsdTypeIdResolver(itemType, xmlConfig);
+            TypeSerializer typeSerializer = new XsdTypeAttributeSerializer(resolver, substitutions);
+            return new UnwrappableIndexedListSerializer(itemType, false, typeSerializer, null)
+                    .createContextual(provider, property);
+        }
+
+        @Override
+        public void serialize(Object value, JsonGenerator generator, SerializerProvider provider)
+                throws IOException {
+            throw JsonMappingException.from(generator, "Substitution list serializer requires a property");
+        }
     }
 
     static boolean isVirtualProperty(RosettaXMLConfiguration configuration, AnnotatedMember member) {
