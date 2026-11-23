@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.util.JsonParserDelegate;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
@@ -14,8 +15,13 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.jsontype.impl.AsPropertyTypeDeserializer;
 import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
 import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+import com.rosetta.model.lib.ModelSymbolId;
+import com.rosetta.model.lib.annotations.RosettaAttribute;
 import com.rosetta.model.lib.annotations.RuneDataType;
+import com.rosetta.util.serialisation.AttributeXMLConfiguration;
+import com.rosetta.util.serialisation.AttributeXMLRepresentation;
 import com.rosetta.util.serialisation.RosettaXMLConfiguration;
+import com.rosetta.util.serialisation.TypeXMLConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +36,30 @@ public class XsdPolymorphicIntrospector extends JacksonAnnotationIntrospector {
 
     public XsdPolymorphicIntrospector(RosettaXMLConfiguration xmlConfig) {
         this.xmlConfig = xmlConfig;
+    }
+
+    @Override
+    public TypeResolverBuilder<?> findPropertyTypeResolver(MapperConfig<?> config, AnnotatedMember member,
+                                                           JavaType baseType) {
+        if (config instanceof DeserializationConfig && isVirtualProperty(xmlConfig, member)) {
+            // A virtual group has no tag of its own. The parser may be positioned at a sibling.
+            return StdTypeResolverBuilder.noTypeInfoBuilder();
+        }
+        return super.findPropertyTypeResolver(config, member, baseType);
+    }
+
+    static boolean isVirtualProperty(RosettaXMLConfiguration configuration, AnnotatedMember member) {
+        if (configuration == null || member == null) {
+            return false;
+        }
+        RosettaAttribute attribute = member.getAnnotation(RosettaAttribute.class);
+        String modelName = XsdUnionIntrospector.modelQualifiedName(member.getDeclaringClass());
+        return attribute != null && configuration.getConfigurationForType(ModelSymbolId.fromQualifiedName(modelName))
+                .flatMap(TypeXMLConfiguration::getAttributes)
+                .map(attributes -> attributes.get(attribute.value()))
+                .flatMap(AttributeXMLConfiguration::getXmlRepresentation)
+                .filter(AttributeXMLRepresentation.VIRTUAL::equals)
+                .isPresent();
     }
 
     @Override
