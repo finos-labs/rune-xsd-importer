@@ -1,0 +1,6 @@
+<trade xmlns="http://example.com/substitution-xsi-type">
+    <swap>
+        <identifier>plain</identifier>
+        <notional>100</notional>
+    </swap>
+</trade>

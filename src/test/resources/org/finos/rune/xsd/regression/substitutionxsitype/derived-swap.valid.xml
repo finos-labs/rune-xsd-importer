@@ -1,0 +1,9 @@
+<trade xmlns="http://example.com/substitution-xsi-type"
+       xmlns:tns="http://example.com/substitution-xsi-type"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <swap xsi:type="tns:SpecialSwap">
+        <identifier>derived</identifier>
+        <notional>200</notional>
+        <specialTerms>example</specialTerms>
+    </swap>
+</trade>

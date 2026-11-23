@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;
 import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+import com.regnosys.rosetta.common.serialisation.xml.SubstitutionMap;
 import com.rosetta.model.lib.ModelSymbolId;
 import com.rosetta.util.serialisation.RosettaXMLConfiguration;
 import com.rosetta.util.serialisation.TypeXMLConfiguration;
@@ -39,7 +40,21 @@ public class XsdTypeIdResolver extends TypeIdResolverBase {
         if (!requiresTypeId(value)) {
             return null;
         }
-        return configuredTypeId(value.getClass());
+        return configuredTypeId(value.getClass(), false);
+    }
+
+    String idForSubstitution(Object value, SubstitutionMap substitutions) {
+        if (value == null) {
+            return null;
+        }
+        Class<?> runtimeType = value.getClass();
+        // Rune's substitution writer takes the first assignable entry in this most-specific-first order.
+        Class<?> declaredType = substitutions.getTypes().stream()
+                .filter(type -> type.isTypeOrSuperTypeOf(runtimeType))
+                .findFirst()
+                .orElse(_baseType)
+                .getRawClass();
+        return sameModelType(runtimeType, declaredType) ? null : configuredTypeId(runtimeType, true);
     }
 
     @Override
@@ -143,8 +158,11 @@ public class XsdTypeIdResolver extends TypeIdResolverBase {
     }
 
     boolean requiresTypeId(Object value) {
-        return value != null && !XsdUnionIntrospector.modelQualifiedName(value.getClass())
-                .equals(XsdUnionIntrospector.modelQualifiedName(_baseType.getRawClass()));
+        return value != null && !sameModelType(value.getClass(), _baseType.getRawClass());
+    }
+
+    private boolean sameModelType(Class<?> left, Class<?> right) {
+        return XsdUnionIntrospector.modelQualifiedName(left).equals(XsdUnionIntrospector.modelQualifiedName(right));
     }
 
     boolean supportsTypeIdOutput() {
@@ -159,7 +177,7 @@ public class XsdTypeIdResolver extends TypeIdResolverBase {
                 .orElse(false);
     }
 
-    private String configuredTypeId(Class<?> runtimeType) {
+    private String configuredTypeId(Class<?> runtimeType, boolean substitution) {
         if (xmlConfig == null) {
             throw new IllegalStateException("Cannot serialize an XSD type ID without XML configuration");
         }
@@ -167,6 +185,10 @@ public class XsdTypeIdResolver extends TypeIdResolverBase {
         TypeXMLConfiguration configuration = xmlConfig.getConfigurationForType(symbolId)
                 .orElseThrow(() -> new IllegalStateException(
                         "No XML configuration is registered for runtime type " + runtimeType.getName()));
+        if (substitution && configuration.getXmlElementName().isPresent()) {
+            throw new IllegalStateException("No XSD type name is configured separately from the element name for "
+                    + runtimeType.getName());
+        }
         String qualifiedName = configuration.getXmlElementFullyQualifiedName()
                 .orElseThrow(() -> new IllegalStateException(
                         "No qualified XML type name is configured for runtime type " + runtimeType.getName()));
